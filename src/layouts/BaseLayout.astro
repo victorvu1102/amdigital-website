@@ -1,0 +1,33 @@
+---
+import Header from '../components/layout/Header.astro';
+import Footer from '../components/layout/Footer.astro';
+import SEO from '../components/seo/SEO.astro';
+import Schema from '../components/seo/Schema.astro';
+import { organizationSchema } from '../utils/schema';
+import '../styles/global.css';
+interface Props { title?: string; description?: string; type?: 'website' | 'article'; schema?: Record<string, unknown> | Record<string, unknown>[]; }
+const { title, description, type = 'website', schema } = Astro.props;
+const schemas = schema ? [organizationSchema(Astro.site!), ...(Array.isArray(schema) ? schema : [schema])] : organizationSchema(Astro.site!);
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="theme-color" content="#0b1714" />
+    <link rel="icon" type="image/svg+xml" href="/favicon/favicon.svg" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+    <SEO {title} {description} canonical={Astro.url} {type} />
+    <Schema data={schemas} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to content</a>
+    <Header />
+    <main id="main-content"><slot /></main>
+    <Footer />
+    <script>
+      import { initScrollAnimation } from '../components/interactive/ScrollAnimation';
+      initScrollAnimation();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,28 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+const { title, description, publishedAt, updatedAt, topic, readingTime, slug } = Astro.props;
+const articleSchema = { '@context':'https://schema.org', '@type':'Article', headline:title, description, datePublished:publishedAt.toISOString(), dateModified:(updatedAt ?? publishedAt).toISOString(), author:{'@type':'Organization',name:'AM Digital'}, publisher:{'@type':'Organization',name:'AM Digital'}, mainEntityOfPage:new URL(`/insights/${slug}/`, Astro.site).toString() };
+---
+<BaseLayout {title} {description} type="article" schema={articleSchema}>
+  <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Insights',href:'/insights/'},{label:title,href:`/insights/${slug}/`}]} />
+  <article>
+    <header class="article-head surface-dark">
+      <div class="container">
+        <div class="meta"><span>{topic}</span><span>{readingTime}</span><time datetime={publishedAt.toISOString()}>{publishedAt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</time></div>
+        <h1>{title}</h1>
+        <p>{description}</p>
+      </div>
+    </header>
+    <div class="prose container"><slot /></div>
+  </article>
+</BaseLayout>
+<style>
+  .article-head { padding: clamp(5rem,10vw,9rem) 0; }
+  .article-head h1 { max-width: 12ch; font-size: clamp(3rem,8vw,7rem); }
+  .article-head p { margin-top: 2rem; max-width: 50rem; color: #bcc7c2; }
+  .meta { display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; margin-bottom: 2rem; color: var(--green); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+  .prose { max-width: 48rem; padding-block: 5rem; }
+  .prose :global(h2) { margin: 3rem 0 1rem; font-size: clamp(2rem,4vw,3.5rem); }
+  .prose :global(p) { margin-block: 1rem; color: #33403b; }
+</style>

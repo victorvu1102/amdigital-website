@@ -1,0 +1,7 @@
+---
+import Schema from './Schema.astro';
+interface FAQ { question: string; answer: string; }
+const { items } = Astro.props as { items: FAQ[] };
+const data = { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: items.map(item => ({ '@type': 'Question', name: item.question, acceptedAnswer: { '@type': 'Answer', text: item.answer } })) };
+---
+<Schema {data} />

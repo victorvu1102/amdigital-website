@@ -1,0 +1,14 @@
+:root {
+  --ink: #0b1714;
+  --ink-soft: #16231f;
+  --paper: #f6f7f1;
+  --white: #ffffff;
+  --green: #22ef7f;
+  --green-dark: #0ab65a;
+  --mint: #c9f8dc;
+  --line: rgba(11, 23, 20, 0.16);
+  --muted: #66706c;
+  --max: 78rem;
+  --radius: 1.15rem;
+  --space-section: clamp(5rem, 10vw, 9rem);
+}

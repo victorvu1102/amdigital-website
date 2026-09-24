@@ -1,0 +1,26 @@
+<footer class="footer surface-dark">
+  <div class="container">
+    <div class="footer-lead">
+      <p class="eyebrow">Global campaign operations</p>
+      <h2>Make your next market move with a team built to run.</h2>
+      <a class="button button--green" href="mailto:contact@amdigital.ninja">contact@amdigital.ninja</a>
+    </div>
+    <div class="footer-grid">
+      <div><strong>AM Digital</strong><p>AI-powered GTM operations<br />Hanoi, Vietnam</p></div>
+      <div><strong>Explore</strong><a href="/services/">Services</a><a href="/case-studies/">Case studies</a><a href="/insights/">Insights</a></div>
+      <div><strong>Company</strong><a href="/about/">About</a><a href="/contact/">Contact</a><a href="/llms.txt">LLMs.txt</a></div>
+    </div>
+    <div class="legal"><span>© {new Date().getFullYear()} AM Outsourcing Services JSC</span><span>Founded in Hanoi, 2015</span></div>
+  </div>
+</footer>
+<style>
+  .footer { padding: var(--space-section) 0 2rem; }
+  .footer-lead { display: grid; gap: 2rem; max-width: 62rem; }
+  .footer-lead h2 { max-width: 15ch; }
+  .footer-lead .button { justify-self: start; }
+  .footer-grid { margin-top: 6rem; padding-block: 2rem; border-block: 1px solid rgba(255,255,255,.2); display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 2rem; }
+  .footer-grid div { display: grid; align-content: start; gap: .65rem; }
+  .footer-grid a, .footer-grid p { font-size: .9rem; color: #b6c0bb; }
+  .legal { padding-top: 2rem; display: flex; justify-content: space-between; gap: 1rem; font-size: .75rem; color: #87928d; }
+  @media (max-width: 700px) { .footer-grid { grid-template-columns: 1fr; } .legal { flex-direction: column; } }
+</style>

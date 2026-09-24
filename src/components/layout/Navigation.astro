@@ -1,0 +1,17 @@
+<nav id="primary-navigation" class="nav" aria-label="Primary navigation">
+  <a href="/services/">Services</a>
+  <a href="/case-studies/">Work</a>
+  <a href="/insights/">Insights</a>
+  <a href="/about/">About</a>
+  <a class="nav-cta" href="/contact/">Start a conversation</a>
+</nav>
+<style>
+  .nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
+  .nav a { font-size: .84rem; font-weight: 750; text-decoration: none; }
+  .nav-cta { padding: .7rem 1rem; border-radius: 999px; background: var(--green); color: var(--ink); }
+  @media (max-width: 760px) {
+    .nav { display: none; position: absolute; inset: 100% 0 auto; padding: 1rem; background: var(--paper); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; }
+    .nav.is-open { display: flex; }
+    .nav a { padding: .7rem; font-size: 1.1rem; }
+  }
+</style>

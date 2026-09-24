@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const insights=(await getCollection('insights')).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
+---
+<BaseLayout title="Insights" description="Practical field notes on creator operations, go-to-market systems, SEO, GEO and AI marketing automation.">
+  <section class="page-head surface-green"><div class="container"><p class="eyebrow">Insights</p><h1>What we’re learning<br />inside the work.</h1></div></section>
+  <section class="section"><div class="container insight-grid">{insights.map(item=><a href={`/insights/${item.id}/`}><div><span>{item.data.topic}</span><time datetime={item.data.publishedAt.toISOString()}>{item.data.publishedAt.toLocaleDateString('en-GB',{day:'numeric',month:'short',year:'numeric'})}</time></div><h2>{item.data.title}</h2><p>{item.data.description}</p><strong>Read article ↗</strong></a>)}</div></section>
+</BaseLayout>
+<style>.page-head{padding:clamp(5rem,10vw,9rem) 0}.page-head h1{margin-top:1rem}.insight-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1rem}.insight-grid>a{min-height:28rem;display:flex;flex-direction:column;padding:2rem;border:1px solid var(--line);border-radius:var(--radius);text-decoration:none;background:var(--white)}.insight-grid>a>div{display:flex;justify-content:space-between;font-size:.75rem;text-transform:uppercase}.insight-grid h2{margin:4rem 0 1rem;font-size:clamp(2rem,4vw,4rem)}.insight-grid p{color:var(--muted)}.insight-grid strong{margin-top:auto;padding-top:2rem}@media(max-width:700px){.insight-grid{grid-template-columns:1fr}}</style>

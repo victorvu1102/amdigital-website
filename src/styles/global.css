@@ -1,0 +1,28 @@
+@import './variables.css';
+@import './typography.css';
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--paper); color: var(--ink); }
+body { margin: 0; min-width: 320px; background: var(--paper); overflow-x: hidden; }
+img, svg { display: block; max-width: 100%; }
+a { color: inherit; text-decoration-thickness: .08em; text-underline-offset: .2em; }
+button, input, textarea { font: inherit; }
+:focus-visible { outline: 3px solid var(--green-dark); outline-offset: 4px; }
+::selection { background: var(--green); color: var(--ink); }
+.container { width: min(calc(100% - 2rem), var(--max)); margin-inline: auto; }
+.section { padding-block: var(--space-section); }
+.grid { display: grid; gap: 1rem; }
+.surface-dark { background: var(--ink); color: var(--paper); }
+.surface-green { background: var(--green); color: var(--ink); }
+.muted { color: var(--muted); }
+.skip-link { position: fixed; top: .5rem; left: .5rem; transform: translateY(-150%); z-index: 100; padding: .75rem 1rem; background: var(--white); color: var(--ink); }
+.skip-link:focus { transform: none; }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: .65rem; min-height: 3.1rem; padding: .78rem 1.15rem; border: 1px solid var(--ink); border-radius: 999px; background: var(--ink); color: var(--white); font-weight: 750; text-decoration: none; transition: transform .2s ease, background .2s ease, color .2s ease; }
+.button:hover { transform: translateY(-2px); background: var(--green); color: var(--ink); }
+.button--light { background: var(--paper); color: var(--ink); }
+.button--green { background: var(--green); color: var(--ink); border-color: var(--green); }
+.button--outline { background: transparent; color: inherit; border-color: currentColor; }
+.tag { display: inline-flex; padding: .45rem .75rem; border: 1px solid currentColor; border-radius: 999px; font-size: .75rem; font-weight: 800; text-transform: uppercase; letter-spacing: .08em; }
+[data-reveal] { opacity: 0; transform: translateY(1.5rem); transition: opacity .65s ease, transform .65s ease; }
+[data-reveal].is-visible { opacity: 1; transform: none; }
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; } [data-reveal] { opacity: 1; transform: none; } }

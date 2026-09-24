@@ -1,0 +1,8 @@
+node_modules/
+.pnpm-store/
+dist/
+.astro/
+.sites-runtime/
+.env
+mockups-contact-sheet.jpg
+*.zip

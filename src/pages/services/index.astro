@@ -1,0 +1,9 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Services from '../../components/sections/Services.astro';
+import CTA from '../../components/sections/CTA.astro';
+---
+<BaseLayout title="Services" description="Choose the AM Digital engagement model that fits your growth stage—from specialist services to embedded operations and AI automation.">
+  <section class="page-head surface-green"><div class="container"><p class="eyebrow">Services</p><h1>Choose how deep<br />you want us in.</h1><p>One specialist service, a launch sprint, an embedded growth team or a complete AI workflow buildout.</p></div></section><Services /><CTA />
+</BaseLayout>
+<style>.page-head{padding:clamp(5rem,10vw,9rem) 0}.page-head p:last-child{max-width:45rem;margin-top:2rem}.page-head h1{margin-top:1rem}</style>

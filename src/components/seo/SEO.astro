@@ -1,0 +1,18 @@
+---
+import { defaultDescription, siteName } from '../../utils/seo';
+interface Props { title?: string; description?: string; canonical?: URL; type?: 'website' | 'article'; }
+const { title, description = defaultDescription, canonical = Astro.url, type = 'website' } = Astro.props;
+const fullTitle = title ? `${title} | ${siteName}` : `${siteName} — AI-Powered GTM Operations`;
+---
+<title>{fullTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+<meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1" />
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={siteName} />
+<meta property="og:title" content={fullTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta name="twitter:card" content="summary" />
+<meta name="twitter:title" content={fullTitle} />
+<meta name="twitter:description" content={description} />

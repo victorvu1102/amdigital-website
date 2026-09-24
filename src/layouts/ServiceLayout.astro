@@ -1,0 +1,42 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+const { entry } = Astro.props;
+const { title, summary, eyebrow, number, audience, deliverables, timeline } = entry.data;
+const schema = { '@context':'https://schema.org', '@type':'Service', name:title, description:summary, provider:{'@type':'Organization',name:'AM Digital'}, areaServed:'Worldwide', serviceType:title };
+---
+<BaseLayout {title} description={summary} {schema}>
+  <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Services',href:'/services/'},{label:title,href:`/services/${entry.id}/`}]} />
+  <article>
+    <header class="service-head surface-green">
+      <div class="container">
+        <div class="service-meta"><span>{number}</span><span>{eyebrow}</span><span>{timeline}</span></div>
+        <h1>{title}</h1>
+        <p>{summary}</p>
+      </div>
+    </header>
+    <div class="service-body container">
+      <div class="prose"><slot /></div>
+      <aside>
+        <p class="eyebrow">What we deliver</p>
+        <ul>{deliverables.map((item:string) => <li>{item}</li>)}</ul>
+        <p class="eyebrow">Built for</p>
+        <div class="tags">{audience.map((item:string) => <span class="tag">{item}</span>)}</div>
+      </aside>
+    </div>
+  </article>
+</BaseLayout>
+<style>
+  .service-head { padding: clamp(5rem,10vw,9rem) 0; }
+  .service-head h1 { max-width: 10ch; }
+  .service-head > div > p { max-width: 48rem; margin-top: 2rem; }
+  .service-meta { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 3rem; font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; }
+  .service-body { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(18rem,1fr); gap: clamp(3rem,8vw,8rem); padding-block: var(--space-section); }
+  .prose :global(h2) { margin: 3rem 0 1rem; font-size: clamp(2rem,4vw,4rem); }
+  .prose :global(p) { margin-block: 1rem; max-width: 46rem; }
+  aside { padding: 2rem; align-self: start; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
+  aside ul { margin: 1.5rem 0 2.5rem; padding-left: 1.2rem; }
+  aside li { padding-block: .45rem; border-bottom: 1px solid var(--line); font-size: .95rem; }
+  .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
+  @media (max-width: 760px) { .service-body { grid-template-columns: 1fr; } .service-meta { flex-direction: column; } }
+</style>

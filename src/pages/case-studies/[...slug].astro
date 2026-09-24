@@ -1,0 +1,13 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
+export async function getStaticPaths(){return (await getCollection('cases')).map(entry=>({params:{slug:entry.id},props:{entry}}));}
+const {entry}=Astro.props; const {Content}=await render(entry); const {title,summary,market,category,metrics}=entry.data;
+const schema={'@context':'https://schema.org','@type':'CreativeWork',name:title,description:summary,about:category,author:{'@type':'Organization',name:'AM Digital'}};
+---
+<BaseLayout {title} description={summary} {schema}>
+  <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Case studies',href:'/case-studies/'},{label:title,href:`/case-studies/${entry.id}/`}]} />
+  <article><header class="case-head surface-dark"><div class="container"><div class="eyebrow">{market} / {category}</div><h1>{title}</h1><p>{summary}</p></div></header><div class="metric-band surface-green"><div class="container">{metrics.map((m:{value:string,label:string})=><span><strong>{m.value}</strong>{m.label}</span>)}</div></div><div class="prose container"><Content /></div></article>
+</BaseLayout>
+<style>.case-head{padding:clamp(5rem,10vw,9rem) 0}.case-head h1{margin:1rem 0 2rem}.case-head p{max-width:50rem;color:#bbc5c1}.metric-band .container{display:grid;grid-template-columns:repeat(3,1fr)}.metric-band span{display:grid;padding:2rem;border-right:1px solid var(--ink);font-size:.75rem;text-transform:uppercase}.metric-band span:first-child{border-left:1px solid var(--ink)}.metric-band strong{font-size:clamp(2rem,5vw,5rem)}.prose{max-width:52rem;padding-block:var(--space-section)}.prose :global(h2){margin:3rem 0 1rem;font-size:clamp(2rem,4vw,4rem)}.prose :global(p){margin-block:1rem;color:#35423d}@media(max-width:600px){.metric-band .container{grid-template-columns:1fr}.metric-band span{border-left:1px solid var(--ink)}}</style>

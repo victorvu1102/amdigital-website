@@ -1,0 +1,28 @@
+---
+import { getCollection } from 'astro:content';
+const services = (await getCollection('services')).sort((a,b) => a.data.number.localeCompare(b.data.number));
+---
+<section class="section services" id="services">
+  <div class="container">
+    <div class="section-head" data-reveal><p class="eyebrow">How we engage</p><h2>Four ways into one<br />connected operation.</h2></div>
+    <div class="service-list">
+      {services.map(service => <a class="service-row" href={`/services/${service.id}/`} data-reveal>
+        <span class="number">{service.data.number}</span>
+        <h3>{service.data.title}</h3>
+        <p>{service.data.summary}</p>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </a>)}
+    </div>
+  </div>
+</section>
+<style>
+  .section-head { display: grid; grid-template-columns: 1fr 3fr; gap: 2rem; align-items: start; margin-bottom: 4rem; }
+  .service-list { border-top: 1px solid var(--ink); }
+  .service-row { display: grid; grid-template-columns: 4rem minmax(12rem,1fr) minmax(16rem,1.25fr) 2rem; gap: 2rem; align-items: start; padding-block: 2rem; border-bottom: 1px solid var(--line); text-decoration: none; transition: background .2s ease, padding .2s ease; }
+  .service-row:hover { padding-inline: 1rem; background: var(--green); }
+  .number { font-size: .8rem; font-weight: 800; }
+  .service-row h3 { font-size: clamp(1.5rem,2.6vw,2.6rem); }
+  .service-row p { color: var(--muted); }
+  .arrow { font-size: 1.5rem; }
+  @media (max-width: 760px) { .section-head { grid-template-columns: 1fr; } .service-row { grid-template-columns: 2.5rem 1fr 1.5rem; gap: 1rem; } .service-row p { grid-column: 2 / -1; } }
+</style>

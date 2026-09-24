@@ -1,0 +1,10 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+const cases=(await getCollection('cases')).sort((a,b)=>a.data.order-b.data.order);
+---
+<BaseLayout title="Case Studies" description="Selected AM Digital work across creator operations, market entry, growth marketing, SEO and GEO.">
+  <section class="page-head surface-dark"><div class="container"><p class="eyebrow">Case studies</p><h1>Results built<br />inside the work.</h1></div></section>
+  <section class="section"><div class="container case-list">{cases.map(item=><a href={`/case-studies/${item.id}/`}><div><span class="eyebrow">{item.data.market}</span><h2>{item.data.title}</h2><p>{item.data.summary}</p></div><div class="metrics">{item.data.metrics.map(m=><span><strong>{m.value}</strong>{m.label}</span>)}</div></a>)}</div></section>
+</BaseLayout>
+<style>.page-head{padding:clamp(5rem,10vw,9rem) 0}.page-head h1{margin-top:1rem}.case-list{border-top:1px solid var(--ink)}.case-list>a{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;padding:3rem 0;border-bottom:1px solid var(--line);text-decoration:none}.case-list h2{margin:.8rem 0 1rem}.case-list p{max-width:45rem;color:var(--muted)}.metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}.metrics span{display:grid;align-content:start;font-size:.7rem;text-transform:uppercase;letter-spacing:.06em}.metrics strong{font-size:clamp(1.5rem,3vw,2.8rem);letter-spacing:-.05em}@media(max-width:760px){.case-list>a{grid-template-columns:1fr}.metrics{grid-template-columns:repeat(3,1fr)}}</style>

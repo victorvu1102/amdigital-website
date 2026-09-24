@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/sections/Hero.astro';
+import Services from '../components/sections/Services.astro';
+import Projects from '../components/sections/Projects.astro';
+import Insights from '../components/sections/Insights.astro';
+import CTA from '../components/sections/CTA.astro';
+import FAQSchema from '../components/seo/FAQSchema.astro';
+const faqs = [
+  { question:'What does AM Digital do?', answer:'AM Digital runs AI-powered go-to-market operations spanning influencer and UGC management, SEO/AEO/GEO, launch sprints, growth operations and marketing automation.' },
+  { question:'Where does AM Digital operate?', answer:'AM Digital is based in Hanoi and runs campaigns across Vietnam, Southeast Asia, the United States, Europe, India and Latin America.' },
+  { question:'Who does AM Digital work with?', answer:'The agency works primarily with DTC and ecommerce brands, technology startups and global brands entering Vietnam or other new markets.' }
+];
+---
+<BaseLayout>
+  <FAQSchema items={faqs} />
+  <Hero />
+  <section class="numbers surface-green" aria-label="Company facts">
+    <div class="container"><div><strong>10+</strong><span>years running campaigns</span></div><div><strong>100+</strong><span>clients across niches</span></div><div><strong>5★</strong><span>average client rating</span></div><div><strong>Global</strong><span>multi-market execution</span></div></div>
+  </section>
+  <Services /><Projects /><Insights /><CTA />
+</BaseLayout>
+<style>
+  .numbers { border-block: 1px solid var(--ink); }.numbers .container { display: grid; grid-template-columns: repeat(4,1fr); }.numbers .container > div { display: grid; gap: .4rem; padding: 2rem 1.5rem; border-right: 1px solid var(--ink); }.numbers .container > div:first-child { border-left: 1px solid var(--ink); }.numbers strong { font-size: clamp(2rem,4vw,4rem); letter-spacing: -.06em; }.numbers span { font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+  @media (max-width:700px) { .numbers .container { grid-template-columns:1fr 1fr; }.numbers .container > div { border-bottom:1px solid var(--ink); } }
+</style>
