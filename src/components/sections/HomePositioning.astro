@@ -1,0 +1,73 @@
+<section id="positioning" class="positioning" aria-labelledby="positioning-title">
+  <div class="positioning-type" aria-hidden="true">GLOBAL<br />REACH</div>
+  <div class="container positioning-inner" data-reveal>
+    <p class="eyebrow">Our positioning</p>
+    <h2 id="positioning-title">Global campaign reach.<br /><span>Deep operational capability.</span><br />One accountable partner.</h2>
+    <p>Strategy, execution and automation across global and local markets—connected in one measurable operating model.</p>
+    <a class="text-link" href="/about/">More about us <span aria-hidden="true">→</span></a>
+  </div>
+</section>
+
+<style>
+  .positioning {
+    position: relative;
+    min-height: 22rem;
+    overflow: hidden;
+    background: var(--green-soft);
+    color: var(--ink);
+  }
+  .positioning-inner {
+    position: relative;
+    z-index: 1;
+    width: min(calc(100% - 3rem), 68rem);
+    padding-block: clamp(3rem, 5vw, 4.75rem);
+    padding-right: 40%;
+  }
+  .positioning .eyebrow { color: var(--green-dark); }
+  .positioning h2 {
+    max-width: 18ch;
+    margin: .9rem 0 1.25rem;
+    font-size: clamp(2.35rem, 4vw, 4.55rem);
+    line-height: .92;
+    letter-spacing: -.06em;
+  }
+  .positioning h2 span { color: var(--green); }
+  .positioning p:not(.eyebrow) {
+    max-width: 34rem;
+    margin-bottom: 1.7rem;
+    color: var(--muted);
+    font-size: 1rem;
+    line-height: 1.55;
+  }
+  .text-link { display: inline-flex; gap: 1.5rem; color: var(--ink); font-weight: 850; text-decoration: none; }
+  .positioning-type {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: max(2rem, calc((100vw - 68rem) / 2));
+    display: grid;
+    width: calc(min(100vw - 3rem, 68rem) / 3);
+    align-content: center;
+    justify-content: end;
+    color: rgba(0, 126, 40, .14);
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', 'Arial Narrow', sans-serif;
+    font-size: clamp(6.5rem, 10.2vw, 9.25rem);
+    font-stretch: condensed;
+    font-weight: 900;
+    line-height: .69;
+    letter-spacing: -.06em;
+    text-align: right;
+    white-space: nowrap;
+    user-select: none;
+  }
+  @media (max-width: 900px) {
+    .positioning-inner { padding-right: 34%; }
+    .positioning-type { right: 1.5rem; width: calc((100vw - 3rem) / 3); font-size: clamp(4.5rem, 11.5vw, 6.75rem); }
+  }
+  @media (max-width: 700px) {
+    .positioning { min-height: 35rem; }
+    .positioning-inner { width: min(calc(100% - 2rem), 68rem); padding-right: 0; padding-bottom: 11rem; }
+    .positioning h2 { max-width: 14ch; font-size: clamp(2.35rem, 11vw, 3.5rem); }
+    .positioning-type { top: auto; right: 1rem; bottom: 2rem; display: block; width: calc(100% - 2rem); font-size: clamp(4.25rem, 20vw, 6rem); opacity: .9; }
+  }
+</style>

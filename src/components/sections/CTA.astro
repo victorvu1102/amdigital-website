@@ -1,11 +1,17 @@
-<section class="cta surface-green">
-  <div class="container" data-reveal>
-    <p class="eyebrow">Your next market move</p>
-    <h2>Bring the ambition.<br />We’ll bring the operating system.</h2>
-    <a class="button" href="/contact/">Start a conversation</a>
+<section class="cta" aria-labelledby="cta-title">
+  <div class="container cta-inner" data-reveal>
+    <p class="eyebrow">Let’s talk</p>
+    <h2 id="cta-title">Your go to market should be moving. <span>Let’s get it there.</span></h2>
+    <a class="button button--green" href="/contact/">Let’s talk <span aria-hidden="true">→</span></a>
   </div>
+  <img src="/images/am-green-ribbon-v2.webp" width="1800" height="600" alt="" loading="lazy" decoding="async" />
 </section>
+
 <style>
-  .cta { padding-block: var(--space-section); }
-  .cta h2 { max-width: 13ch; margin: 1rem 0 2.5rem; }
+  .cta { position:relative; min-height:20rem; overflow:hidden; background:var(--navy); color:#fff; }
+  .cta-inner { position:relative; z-index:2; padding-block:clamp(3.5rem,6vw,5rem); }
+  .cta h2 { max-width:17ch; margin:1rem 0 2.5rem; font-size:clamp(3rem,6.2vw,6.5rem); line-height:.9; }
+  .cta h2 span { color:var(--green-bright); }
+  .cta img { position:absolute; z-index:1; right:-16%; bottom:-8rem; width:min(74rem,78vw); height:auto; filter:brightness(.5) saturate(.85) hue-rotate(8deg); }
+  @media (max-width:700px) { .cta { min-height:34rem; } .cta img { right:-65%; bottom:-2rem; width:70rem; max-width:none; } }
 </style>

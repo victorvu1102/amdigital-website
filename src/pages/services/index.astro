@@ -1,9 +1,135 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import Services from '../../components/sections/Services.astro';
-import CTA from '../../components/sections/CTA.astro';
+
+const tiers = [
+  { number:'01', tier:'Tier 1', title:'À La Carte Services', description:'One channel, one fix, run properly.', href:'/services/influencer-ugc/', image:'/images/am-global-team.webp', imageAlt:'AM Digital specialists planning a campaign', theme:'light', side:'copy-first' },
+  { number:'02', tier:'Tier 2', title:'GTM Launch Sprint', description:'In market in 4 to 6 weeks, with real data to show for it.', href:'/services/gtm-launch-sprint/', image:'/images/am-market-entry.webp', imageAlt:'AM Digital market entry planning session', theme:'dark', side:'image-first' },
+  { number:'03', tier:'Tier 3', title:'Growth Operations Retainer', description:'A specialist operations team running your growth motion every month.', href:'/services/growth-operations/', image:'/images/service-growth-operations.webp', imageAlt:'A growth operations team reviewing campaign performance around a laptop', theme:'light', side:'copy-first' },
+  { number:'04', tier:'Tier 4', title:'AI Automation Buildout', description:'Manual work out. Campaign velocity up.', href:'/services/ai-automation/', image:'/images/service-ai-automation.webp', imageAlt:'A marketing automation specialist building a connected AI workflow', theme:'light', side:'image-first' },
+];
 ---
+
 <BaseLayout title="Services" description="Choose the AM Digital engagement model that fits your growth stage—from specialist services to embedded operations and AI automation.">
-  <section class="page-head surface-green"><div class="container"><p class="eyebrow">Services</p><h1>Choose how deep<br />you want us in.</h1><p>One specialist service, a launch sprint, an embedded growth team or a complete AI workflow buildout.</p></div></section><Services /><CTA />
+  <article class="services-page">
+    <header class="services-hero" aria-labelledby="services-page-title">
+      <div class="container services-hero-inner">
+        <div class="services-hero-copy" data-reveal>
+          <p class="eyebrow">Services</p>
+          <h1 id="services-page-title">Choose how deep you want us in.</h1>
+          <p>One specialist service, a full GTM sprint or an ongoing operations retainer. Pick the engagement that fits where you are right now.</p>
+          <a class="button" href="#service-tiers">Explore services <span aria-hidden="true">↓</span></a>
+        </div>
+        <img src="/images/am-green-ribbon-v2.webp" width="1800" height="600" alt="" fetchpriority="high" decoding="async" />
+        <div class="capability-labels" aria-label="Core capabilities"><span>Strategy</span><span>Execution</span><span>Automation</span></div>
+      </div>
+    </header>
+
+    <section id="service-tiers" class="service-tiers" aria-label="Service engagement tiers">
+      {tiers.map((item) => (
+        <article id={`tier-${item.number}`} class:list={['tier-card', `tier-card--${item.theme}`, `tier-card--${item.side}`]}>
+          <div class="tier-copy">
+            <div class="tier-number" aria-hidden="true">{item.number}</div>
+            <p class="eyebrow">{item.tier}</p>
+            <h2>{item.title}</h2>
+            <p>{item.description}</p>
+            <a href={item.href}>Learn more <span aria-hidden="true">→</span></a>
+          </div>
+          <img src={item.image} width="1536" height="1024" loading="lazy" decoding="async" alt={item.imageAlt} />
+        </article>
+      ))}
+    </section>
+
+    <section class="services-process section" aria-labelledby="services-process-title">
+      <div class="container">
+        <p class="eyebrow">Our process</p>
+        <h2 id="services-process-title">From opportunity to ongoing growth.</h2>
+        <ol>
+          <li><span>1</span><div><h3>Diagnose</h3><p>Find the right opportunity.</p></div></li>
+          <li><span>2</span><div><h3>Build</h3><p>Design and set up.</p></div></li>
+          <li><span>3</span><div><h3>Launch</h3><p>Go live fast.</p></div></li>
+          <li><span>4</span><div><h3>Optimize</h3><p>Improve what works.</p></div></li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="trusted" aria-labelledby="trusted-title">
+      <div class="container">
+        <p id="trusted-title" class="eyebrow">Trusted partners</p>
+        <div class="partner-row">
+          <img src="/partners/perplexity.svg" alt="Perplexity" loading="lazy" />
+          <img src="/partners/speak.svg" alt="Speak" loading="lazy" />
+          <img src="/partners/gleam.svg" alt="Gleam" loading="lazy" />
+          <img src="/partners/mode-chocolate.svg" alt="Mode Chocolate" loading="lazy" />
+        </div>
+      </div>
+    </section>
+
+    <section class="services-cta" aria-labelledby="services-cta-title">
+      <div class="container">
+        <div><p class="eyebrow">Let’s talk</p><h2 id="services-cta-title">Not sure where to start?<br /><span>Let’s work it out.</span></h2><p>We’ll help you choose the right engagement.</p><a class="button button--green" href="/contact/">Discuss your GTM needs <span aria-hidden="true">→</span></a></div>
+        <img src="/images/am-green-ribbon-v2.webp" width="1800" height="600" alt="" loading="lazy" decoding="async" />
+      </div>
+    </section>
+  </article>
 </BaseLayout>
-<style>.page-head{padding:clamp(5rem,10vw,9rem) 0}.page-head p:last-child{max-width:45rem;margin-top:2rem}.page-head h1{margin-top:1rem}</style>
+
+<style>
+  .services-page { background:var(--white); }
+  .services-hero { position:relative; min-height:33rem; overflow:hidden; background:var(--green-bright); }
+  .services-hero-inner { position:relative; min-height:33rem; padding-block:clamp(3rem,7vw,5.5rem); }
+  .services-hero-copy { position:relative; z-index:2; width:min(36rem,55%); }
+  .services-hero h1 { max-width:11ch; margin:.8rem 0 1.4rem; font-size:clamp(3.5rem,6vw,6.4rem); }
+  .services-hero-copy > p:not(.eyebrow) { max-width:31rem; margin-bottom:2rem; color:var(--ink-soft); }
+  .services-hero-inner > img { position:absolute; z-index:0; right:-20rem; top:-1rem; width:min(76rem,88vw); height:36rem; object-fit:cover; transform:rotate(-14deg); filter:saturate(.72) brightness(1.02); }
+  .capability-labels { position:absolute; z-index:3; inset:0 1rem 0 auto; width:16rem; pointer-events:none; }
+  .capability-labels span { position:absolute; display:inline-flex; padding:.6rem 1rem; border-radius:999px; background:rgba(255,255,255,.88); font-size:.8rem; font-weight:750; box-shadow:0 .5rem 2rem rgba(7,19,31,.1); }
+  .capability-labels span:nth-child(1){top:18%;left:0}.capability-labels span:nth-child(2){top:46%;right:0}.capability-labels span:nth-child(3){bottom:13%;left:1rem}
+  .service-tiers { border-bottom:1px solid var(--line); }
+  .tier-card { min-height:25rem; display:grid; grid-template-columns:1fr 1.1fr; border-top:1px solid var(--line); background:#fff; }
+  .tier-card--image-first > img { grid-column:1; grid-row:1; }
+  .tier-card--image-first .tier-copy { grid-column:2; grid-row:1; }
+  .tier-copy { position:relative; display:flex; flex-direction:column; justify-content:center; padding:clamp(2.5rem,6vw,5.5rem) max(2rem,calc((100vw - var(--max))/2)); overflow:hidden; }
+  .tier-copy .eyebrow { position:relative; z-index:1; }
+  .tier-number { position:absolute; top:1.25rem; right:2rem; color:var(--display-light); font-size:clamp(7rem,13vw,13rem); font-weight:900; letter-spacing:-.09em; line-height:.8; user-select:none; }
+  .tier-copy h2 { position:relative; z-index:1; max-width:12ch; margin:.75rem 0 .8rem; font-size:clamp(2.4rem,4vw,4.2rem); }
+  .tier-copy > p:not(.eyebrow) { position:relative; z-index:1; max-width:25rem; color:var(--muted); }
+  .tier-copy > a { position:relative; z-index:1; display:inline-flex; gap:1rem; margin-top:1.5rem; color:var(--green); font-weight:800; text-decoration:none; }
+  .tier-card > img { width:100%; height:100%; min-height:25rem; object-fit:cover; }
+  .tier-card--dark { background:var(--green-dark); color:#fff; }
+  .tier-card--dark .tier-number { color:rgba(255,255,255,.16); }
+  .tier-card--dark .tier-copy > p:not(.eyebrow) { color:#d8efe0; }
+  .tier-card--dark .tier-copy > a { color:var(--green-bright); }
+  .services-process { padding-block:clamp(3rem,6vw,5rem); }
+  .services-process h2 { margin:.65rem 0 2.2rem; font-size:clamp(2.4rem,4vw,4.2rem); }
+  .services-process ol { display:grid; grid-template-columns:repeat(4,1fr); margin:0; padding:0; list-style:none; }
+  .services-process li { position:relative; display:grid; grid-template-columns:4rem 1fr; gap:1rem; align-items:center; padding-right:2rem; }
+  .services-process li:not(:last-child)::after { content:"→"; position:absolute; right:.75rem; color:var(--green-bright); font-size:1.6rem; }
+  .services-process li > span { width:3.6rem; height:3.6rem; display:grid; place-items:center; border:2px solid var(--green); border-radius:50%; color:var(--green); font-size:1.6rem; font-weight:850; }
+  .services-process h3 { font-size:1.1rem; letter-spacing:-.02em; }
+  .services-process p { color:var(--muted); font-size:.85rem; line-height:1.35; }
+  .trusted { padding:1rem 0 3.5rem; }
+  .partner-row { display:grid; grid-template-columns:repeat(4,1fr); gap:0; align-items:center; margin-top:1.5rem; border-block:1px solid var(--line); }
+  .partner-row img { width:100%; height:6.5rem; padding:1.7rem 2rem; object-fit:contain; filter:grayscale(1); border-left:1px solid var(--line); }
+  .partner-row img:first-child { border-left:0; }
+  .services-cta { position:relative; overflow:hidden; background:var(--navy); color:#fff; }
+  .services-cta .container { position:relative; min-height:25rem; display:flex; align-items:center; padding-block:3.5rem; }
+  .services-cta .container > div { position:relative; z-index:2; }
+  .services-cta h2 { max-width:14ch; margin:.75rem 0 1rem; font-size:clamp(3rem,5vw,5.4rem); }
+  .services-cta h2 span { color:var(--green-bright); }
+  .services-cta p:not(.eyebrow) { margin-bottom:1.5rem; color:#d5dfe5; }
+  .services-cta img { position:absolute; right:-22rem; bottom:-9rem; width:min(80rem,92vw); filter:saturate(.72) brightness(1.08); opacity:.85; }
+  @media (max-width:800px) {
+    .services-hero-copy { width:100%; }
+    .services-hero-inner > img { right:-32rem; opacity:.5; }
+    .capability-labels { display:none; }
+    .tier-card { grid-template-columns:1fr; }
+    .tier-card > img,.tier-card--image-first > img { grid-column:1; grid-row:1; min-height:19rem; }
+    .tier-card .tier-copy,.tier-card--image-first .tier-copy { grid-column:1; grid-row:2; min-height:23rem; }
+    .services-process ol { grid-template-columns:1fr 1fr; gap:2rem; }
+    .services-process li:not(:last-child)::after { display:none; }
+    .partner-row { grid-template-columns:1fr 1fr; }
+    .partner-row img:nth-child(3) { border-left:0; border-top:1px solid var(--line); }
+    .partner-row img:nth-child(4) { border-top:1px solid var(--line); }
+    .services-cta img { right:-34rem; opacity:.55; }
+  }
+</style>

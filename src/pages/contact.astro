@@ -1,7 +1,120 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 ---
-<BaseLayout title="Contact" description="Start a conversation with AM Digital about global GTM, creator operations, search visibility or AI marketing automation.">
-  <section class="contact section surface-dark"><div class="container contact-grid"><div><p class="eyebrow">Start a conversation</p><h1>What market move are you planning?</h1><p>Tell us where you are now, where you want to go and what is slowing the team down. We’ll reply with a practical next step.</p></div><div class="contact-card"><span class="eyebrow">Email</span><a href="mailto:contact@amdigital.ninja">contact@amdigital.ninja</a><span class="eyebrow">Office</span><address>Floor 4, Viwaseen Tower<br />48 To Huu Street<br />Hanoi, Vietnam</address><span class="eyebrow">Website</span><a href="https://amdigital.ninja" rel="noopener noreferrer">amdigital.ninja ↗</a></div></div></section>
+
+<BaseLayout title="Contact AM Digital" description="Tell AM Digital about your market, growth challenge and the specialist support you need. Our team will reply with a practical next step.">
+  <article class="contact-page">
+    <section class="contact-hero" aria-labelledby="contact-title">
+      <div class="container contact-grid">
+        <div class="contact-copy">
+          <p class="eyebrow">Start a conversation</p>
+          <h1 id="contact-title">What market move are you planning?</h1>
+          <p class="lede">Tell us where you are now, where you want to go and what is slowing the team down. We’ll reply with a practical next step.</p>
+
+          <div class="contact-details" aria-label="AM Digital contact details">
+            <div>
+              <span>Email</span>
+              <a href="mailto:info@amdigital.ninja">info@amdigital.ninja</a>
+            </div>
+            <div>
+              <span>Office</span>
+              <address>Floor 4, Viwaseen Tower<br />48 To Huu Street, Hanoi, Vietnam</address>
+            </div>
+          </div>
+        </div>
+
+        <form class="contact-form" action="https://formsubmit.co/info@amdigital.ninja" method="POST" accept-charset="UTF-8" aria-labelledby="form-title">
+          <input type="hidden" name="_subject" value="New AM Digital website enquiry" />
+          <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_next" value="https://am-digital-agency.vuhuuhao.chatgpt.site/contact/thanks/" />
+          <label class="honey" aria-hidden="true">Leave this field empty<input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
+
+          <div class="form-heading">
+            <p class="eyebrow">Tell us about the opportunity</p>
+            <h2 id="form-title">Let’s find the right next move.</h2>
+          </div>
+
+          <div class="field-row">
+            <label>
+              <span>Your name <b aria-hidden="true">*</b></span>
+              <input type="text" name="name" autocomplete="name" maxlength="100" required />
+            </label>
+            <label>
+              <span>Work email <b aria-hidden="true">*</b></span>
+              <input type="email" name="email" autocomplete="email" inputmode="email" maxlength="160" required />
+            </label>
+          </div>
+
+          <div class="field-row">
+            <label>
+              <span>Company</span>
+              <input type="text" name="company" autocomplete="organization" maxlength="120" />
+            </label>
+            <label>
+              <span>What do you need?</span>
+              <select name="service">
+                <option value="Not sure yet">Not sure yet</option>
+                <option value="GTM Launch Sprint">GTM Launch Sprint</option>
+                <option value="Growth Operations Retainer">Growth Operations Retainer</option>
+                <option value="AI Automation Buildout">AI Automation Buildout</option>
+                <option value="Influencer and UGC">Influencer and UGC</option>
+                <option value="SEO, AEO and GEO">SEO, AEO and GEO</option>
+              </select>
+            </label>
+          </div>
+
+          <label class="message-field">
+            <span>Tell us about your goal <b aria-hidden="true">*</b></span>
+            <textarea name="message" rows="6" minlength="20" maxlength="3000" placeholder="Market, growth stage, goal and the main challenge you want to solve." required></textarea>
+          </label>
+
+          <div class="form-footer">
+            <p>Protected by reCAPTCHA and an additional anti-spam check. By sending, you agree that AM Digital may contact you about this enquiry.</p>
+            <button class="button button--green" type="submit">Send enquiry <span aria-hidden="true">→</span></button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </article>
 </BaseLayout>
-<style>.contact{min-height:75vh;display:grid;align-items:center}.contact-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:clamp(3rem,8vw,8rem);align-items:center}.contact h1{max-width:10ch}.contact h1+p{margin-top:2rem;max-width:42rem;color:#b8c3be}.contact-card{display:grid;gap:1rem;padding:2rem;border:1px solid rgba(255,255,255,.25);border-radius:var(--radius);background:var(--ink-soft)}.contact-card .eyebrow:not(:first-child){margin-top:1.5rem}.contact-card a{font-size:clamp(1.2rem,2vw,1.8rem);font-weight:800;color:var(--green)}address{font-style:normal;line-height:1.6;color:#c4cec9}@media(max-width:760px){.contact-grid{grid-template-columns:1fr}}</style>
+
+<style>
+  .contact-page { background:var(--navy); color:var(--white); }
+  .contact-hero { min-height:calc(100vh - 5.5rem); display:grid; align-items:center; padding-block:clamp(3rem,6vw,6rem); }
+  .contact-grid { display:grid; grid-template-columns:minmax(18rem,.82fr) minmax(30rem,1.18fr); gap:clamp(3rem,7vw,7rem); align-items:center; }
+  .contact-copy .eyebrow { color:var(--green-bright); }
+  .contact-copy h1 { max-width:10ch; margin:.9rem 0 1.75rem; font-size:clamp(3.25rem,6vw,6.25rem); line-height:.88; }
+  .lede { max-width:39rem; color:var(--silver); font-size:clamp(1.05rem,1.5vw,1.25rem); }
+  .contact-details { display:grid; gap:1.35rem; margin-top:clamp(2.5rem,5vw,4rem); padding-top:1.75rem; border-top:1px solid rgba(255,255,255,.22); }
+  .contact-details div { display:grid; grid-template-columns:5.5rem 1fr; gap:1rem; }
+  .contact-details span { color:var(--green-bright); font-size:.72rem; font-weight:850; letter-spacing:.12em; text-transform:uppercase; }
+  .contact-details a { color:var(--white); font-weight:800; text-decoration:none; }
+  address { color:var(--silver); font-style:normal; line-height:1.55; }
+  .contact-form { position:relative; display:grid; gap:1.4rem; padding:clamp(1.5rem,4vw,3rem); background:linear-gradient(145deg,#fff 0%,#eef9f1 100%); color:var(--ink); box-shadow:0 2rem 5rem rgba(0,0,0,.22); }
+  .form-heading { padding-bottom:1.5rem; border-bottom:1px solid var(--line); }
+  .form-heading h2 { max-width:15ch; margin-top:.55rem; font-size:clamp(2rem,3.4vw,3.25rem); line-height:.95; }
+  .field-row { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem; }
+  .contact-form label { display:grid; gap:.55rem; }
+  .contact-form label > span { font-size:.8rem; font-weight:800; letter-spacing:.045em; }
+  .contact-form label b { color:var(--green); }
+  .contact-form input,.contact-form select,.contact-form textarea { width:100%; min-height:3.25rem; padding:.8rem .95rem; border:1px solid #b9c9be; border-radius:0; background:rgba(255,255,255,.84); color:var(--ink); font:inherit; outline:none; transition:border-color .2s ease,box-shadow .2s ease; }
+  .contact-form textarea { min-height:9.5rem; resize:vertical; line-height:1.55; }
+  .contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(0,126,40,.14); }
+  .contact-form input:invalid:not(:placeholder-shown),.contact-form textarea:invalid:not(:placeholder-shown) { border-color:#a83c32; }
+  .message-field { margin-top:.15rem; }
+  .form-footer { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding-top:.25rem; }
+  .form-footer p { max-width:29rem; color:var(--muted); font-size:.76rem; line-height:1.55; }
+  .form-footer .button { flex:none; border-color:var(--green); cursor:pointer; }
+  .honey { position:absolute!important; width:1px!important; height:1px!important; overflow:hidden!important; clip:rect(0 0 0 0)!important; clip-path:inset(50%)!important; white-space:nowrap!important; }
+  @media (max-width:900px) {
+    .contact-grid { grid-template-columns:1fr; }
+    .contact-copy h1 { max-width:13ch; }
+  }
+  @media (max-width:620px) {
+    .field-row { grid-template-columns:1fr; }
+    .contact-form { padding:1.35rem; }
+    .form-footer { align-items:flex-start; flex-direction:column; }
+    .form-footer .button { width:100%; }
+    .contact-details div { grid-template-columns:1fr; gap:.4rem; }
+  }
+</style>

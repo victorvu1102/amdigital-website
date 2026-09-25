@@ -1,13 +1,7 @@
-@font-face {
-  font-family: 'AM Sans';
-  src: local('Arial');
-  font-display: swap;
-}
-
-html { font-family: 'AM Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif; }
+html { font-family: Inter, 'Helvetica Neue', Helvetica, Arial, sans-serif; }
 
 h1, h2, h3, p { margin: 0; }
-h1, h2, h3 { letter-spacing: -0.055em; line-height: .94; }
+h1, h2, h3 { font-weight: 800; letter-spacing: -0.055em; line-height: .94; }
 h1 { font-size: clamp(3.5rem, 9vw, 8.6rem); }
 h2 { font-size: clamp(2.8rem, 6vw, 6.2rem); }
 h3 { font-size: clamp(1.5rem, 3vw, 2.8rem); }

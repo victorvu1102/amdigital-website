@@ -1,0 +1,37 @@
+---
+const clients = [
+  { name: 'Perplexity', logo: '/partners/perplexity.svg', href: '/case-studies/perplexity/', type: 'mark' },
+  { name: 'Speak', logo: '/partners/speak.svg', href: '/case-studies/speak-ai/', type: 'mark' },
+  { name: 'Gleam', logo: '/partners/gleam.svg', href: '/case-studies/gleam/', type: 'mark' },
+  { name: 'Mode Chocolate', logo: '/partners/mode-chocolate.svg', href: '/case-studies/mode-chocolate/', type: 'wordmark' }
+];
+---
+<section class="partners" aria-labelledby="partners-title">
+  <div class="container partners-inner">
+    <p class="eyebrow">Selected client work</p>
+    <h2 id="partners-title">Brands we’ve worked with</h2>
+    <ul aria-label="Selected clients">{clients.map(client => (
+      <li>
+        <a class:list={['client-lockup', `client-lockup--${client.type}`]} href={client.href} aria-label={`View ${client.name} case study`}>
+          <img src={client.logo} width={client.type === 'wordmark' ? 184 : 48} height={client.type === 'wordmark' ? 35 : 48} alt="" loading="lazy" decoding="async" />
+          {client.type === 'mark' && <span>{client.name}</span>}
+        </a>
+      </li>
+    ))}</ul>
+  </div>
+</section>
+
+<style>
+  .partners { background: #fff; border-bottom: 1px solid var(--line); }
+  .partners-inner { padding-block: clamp(2.75rem, 4.5vw, 4rem); }
+  .partners h2 { margin: .65rem 0 2.5rem; font-size: clamp(2.3rem, 4vw, 4.2rem); }
+  .partners ul { display: grid; grid-template-columns: repeat(4, 1fr); margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .partners li { display: grid; min-height: 7.25rem; place-items: center; padding: 1rem; border-right: 1px solid var(--line); }
+  .partners li:last-child { border-right: 0; }
+  .client-lockup { display:flex; align-items:center; justify-content:center; gap:.75rem; color:var(--navy); font-size:clamp(1.25rem,2vw,1.8rem); font-weight:850; letter-spacing:-.05em; text-decoration:none; transition:opacity .2s ease, transform .2s ease; }
+  .client-lockup:hover { opacity:.72; transform:translateY(-2px); }
+  .client-lockup img { flex:0 0 auto; width:2.6rem; height:2.6rem; filter:grayscale(1); object-fit:contain; }
+  .client-lockup--wordmark img { width:min(11.5rem,100%); height:auto; }
+  .client-lockup--mark span { white-space:nowrap; }
+  @media (max-width:680px) { .partners ul { grid-template-columns: 1fr 1fr; } .partners li:nth-child(2) { border-right:0; } .partners li:nth-child(-n+2) { border-bottom:1px solid var(--line); } }
+</style>

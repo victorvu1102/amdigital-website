@@ -2,12 +2,90 @@
 import { getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Breadcrumbs from '../../components/seo/Breadcrumbs.astro';
-export async function getStaticPaths(){return (await getCollection('cases')).map(entry=>({params:{slug:entry.id},props:{entry}}));}
-const {entry}=Astro.props; const {Content}=await render(entry); const {title,summary,market,category,metrics}=entry.data;
-const schema={'@context':'https://schema.org','@type':'CreativeWork',name:title,description:summary,about:category,author:{'@type':'Organization',name:'AM Digital'}};
+
+export async function getStaticPaths() {
+  return (await getCollection('cases')).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { title, summary, market, category, metrics, order } = entry.data;
+const cases = (await getCollection('cases')).sort((a, b) => a.data.order - b.data.order);
+const currentIndex = cases.findIndex((item) => item.id === entry.id);
+const nextCase = cases[(currentIndex + 1) % cases.length];
+const identities: Record<string, { word: string; logo: string; note: string }> = {
+  'mode-chocolate': { word: 'CREATOR', logo: '/partners/mode-chocolate.svg', note: 'Creator-led retail growth' },
+  perplexity: { word: 'SCALE', logo: '/partners/perplexity.svg', note: 'Multi-market creator operations' },
+  'speak-ai': { word: 'LOCAL', logo: '/partners/speak.svg', note: 'Local expertise, regional reach' },
+  gleam: { word: 'AUTHORITY', logo: '/partners/gleam.svg', note: 'Compounding organic authority' },
+};
+const identity = identities[entry.id] ?? identities.gleam;
+const schema = {'@context':'https://schema.org','@type':'CreativeWork',name:title,description:summary,about:category,author:{'@type':'Organization',name:'AM Digital'}};
 ---
+
 <BaseLayout {title} description={summary} {schema}>
   <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Case studies',href:'/case-studies/'},{label:title,href:`/case-studies/${entry.id}/`}]} />
-  <article><header class="case-head surface-dark"><div class="container"><div class="eyebrow">{market} / {category}</div><h1>{title}</h1><p>{summary}</p></div></header><div class="metric-band surface-green"><div class="container">{metrics.map((m:{value:string,label:string})=><span><strong>{m.value}</strong>{m.label}</span>)}</div></div><div class="prose container"><Content /></div></article>
+  <article class={`case-page case-page--${entry.id}`}>
+    <header class="case-hero">
+      <div class="case-display" aria-hidden="true">{identity.word}</div>
+      <div class="container hero-grid">
+        <div class="hero-copy">
+          <p class="eyebrow">Case study · {market}</p>
+          <h1>{title.split(' ').map((word: string) => <span>{word}</span>)}</h1>
+          <p class="hero-summary">{summary}</p>
+          <div class="hero-meta" aria-label="Case study details"><span>{category}</span><span>{identity.note}</span></div>
+        </div>
+        <div class="hero-mark">
+          <span class="case-number" aria-hidden="true">{String(order).padStart(2, '0')}</span>
+          <div class="logo-panel"><span>Partner</span><img src={identity.logo} alt={`${title} logo`} width="280" height="100" loading="eager" /></div>
+        </div>
+      </div>
+      <img class="hero-ribbon" src="/images/am-green-ribbon-v2.webp" alt="" width="1600" height="620" loading="eager" />
+    </header>
+
+    <section class="metric-band" aria-label="Key results"><div class="container">
+      {metrics.map((metric: { value: string; label: string }, index: number) => <div class="metric"><span class="metric-index">0{index + 1}</span><strong>{metric.value}</strong><span>{metric.label}</span></div>)}
+    </div></section>
+
+    <section class="story-section"><div class="container">
+      <div class="story-intro"><p class="eyebrow">Inside the work</p><h2>From the brief<br />to the result.</h2><p>Strategy and execution, connected inside one operating rhythm.</p></div>
+      <div class="case-prose"><Content /></div>
+    </div></section>
+
+    <section class="case-footer">
+      <div class="case-footer-word" aria-hidden="true">NEXT</div><img src="/images/am-green-ribbon-v2.webp" alt="" width="1600" height="620" loading="lazy" />
+      <div class="container"><p class="eyebrow">Continue exploring</p><a href={`/case-studies/${nextCase.id}/`}><span>Next case study</span><strong>{nextCase.data.title}</strong><span class="arrow" aria-hidden="true">↗</span></a></div>
+    </section>
+  </article>
 </BaseLayout>
-<style>.case-head{padding:clamp(5rem,10vw,9rem) 0}.case-head h1{margin:1rem 0 2rem}.case-head p{max-width:50rem;color:#bbc5c1}.metric-band .container{display:grid;grid-template-columns:repeat(3,1fr)}.metric-band span{display:grid;padding:2rem;border-right:1px solid var(--ink);font-size:.75rem;text-transform:uppercase}.metric-band span:first-child{border-left:1px solid var(--ink)}.metric-band strong{font-size:clamp(2rem,5vw,5rem)}.prose{max-width:52rem;padding-block:var(--space-section)}.prose :global(h2){margin:3rem 0 1rem;font-size:clamp(2rem,4vw,4rem)}.prose :global(p){margin-block:1rem;color:#35423d}@media(max-width:600px){.metric-band .container{grid-template-columns:1fr}.metric-band span{border-left:1px solid var(--ink)}}</style>
+
+<style>
+  .case-page{--case-bg:var(--navy);--case-fg:var(--white);--case-accent:var(--green-bright);--case-ghost:rgba(50,216,117,.22);--case-metric-bg:var(--green);--case-metric-fg:var(--white)}
+  .case-page--mode-chocolate{--case-bg:#f2eee5;--case-fg:var(--ink);--case-accent:var(--green);--case-ghost:rgba(0,126,40,.13);--case-metric-bg:var(--green)}
+  .case-page--speak-ai{--case-bg:#007e28;--case-ghost:rgba(255,255,255,.16);--case-metric-bg:var(--navy)}
+  .case-page--gleam{--case-bg:#e6f5eb;--case-fg:var(--ink);--case-accent:var(--green);--case-ghost:rgba(0,126,40,.12);--case-metric-bg:var(--ink)}
+  .case-hero{position:relative;min-height:clamp(38rem,68vw,48rem);overflow:hidden;background:var(--case-bg);color:var(--case-fg)}
+  .hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(18rem,.65fr);gap:clamp(2rem,7vw,7rem);align-items:end;min-height:inherit;padding-block:clamp(5rem,9vw,8rem)}
+  .hero-copy{max-width:48rem}.hero-copy .eyebrow{color:var(--case-accent)}
+  .hero-copy h1{max-width:10ch;margin:1rem 0 1.5rem;font-size:clamp(4.5rem,10vw,9rem);line-height:.84;letter-spacing:-.075em}.hero-copy h1 span{display:block}
+  .hero-summary{max-width:43rem;font-size:clamp(1.05rem,1.5vw,1.3rem);color:color-mix(in srgb,var(--case-fg) 72%,transparent)}
+  .hero-meta{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:2rem}.hero-meta span{padding:.6rem .9rem;border:1px solid color-mix(in srgb,var(--case-fg) 24%,transparent);border-radius:999px;font-size:.74rem;font-weight:700;letter-spacing:.04em}
+  .hero-mark{display:grid;gap:1rem;align-self:stretch;align-content:end;justify-items:end}.case-number{display:none}
+  .logo-panel{width:min(100%,22rem);padding:1.2rem;border:1px solid color-mix(in srgb,var(--case-fg) 20%,transparent);background:color-mix(in srgb,var(--case-bg) 78%,transparent);backdrop-filter:blur(10px)}
+  .logo-panel span{display:block;margin-bottom:1.3rem;font-size:.68rem;font-weight:800;letter-spacing:.15em;text-transform:uppercase;color:var(--case-accent)}
+  .logo-panel img{display:block;width:100%;max-height:4.4rem;object-fit:contain;object-position:left center;filter:grayscale(1) contrast(1.25)}.case-page--perplexity .logo-panel img,.case-page--speak-ai .logo-panel img{filter:grayscale(1) brightness(0) invert(1)}
+  .case-display{position:absolute;z-index:0;top:4%;right:-2%;width:55%;overflow:hidden;color:var(--case-ghost);font-size:clamp(7rem,16vw,15rem);font-weight:900;line-height:.78;letter-spacing:-.09em;text-align:right;white-space:nowrap}
+  .hero-ribbon{position:absolute;z-index:1;right:-12%;bottom:-20%;width:min(76rem,74vw);height:auto;opacity:.46;transform:rotate(-5deg);pointer-events:none}.case-page--mode-chocolate .hero-ribbon,.case-page--gleam .hero-ribbon{opacity:.3}
+  .metric-band{background:var(--case-metric-bg);color:var(--case-metric-fg)}.metric-band .container{display:grid;grid-template-columns:repeat(3,1fr)}
+  .metric{position:relative;display:grid;min-height:14rem;align-content:center;padding:clamp(1.6rem,4vw,3rem);border-inline-start:1px solid rgba(255,255,255,.25)}.metric:last-child{border-inline-end:1px solid rgba(255,255,255,.25)}
+  .metric-index{position:absolute;top:1rem;right:1rem;color:rgba(255,255,255,.52);font-size:.7rem;font-weight:800;letter-spacing:.14em}.metric strong{display:block;color:var(--green-bright);font-size:clamp(3.3rem,7vw,6.8rem);line-height:.9;letter-spacing:-.07em}.case-page--speak-ai .metric strong{color:var(--display-light)}
+  .metric>span:last-child{max-width:14rem;margin-top:.8rem;font-size:.76rem;font-weight:800;line-height:1.35;letter-spacing:.08em;text-transform:uppercase}
+  .story-section{padding-block:var(--space-section);background:var(--white)}.story-section>.container{display:grid;grid-template-columns:minmax(15rem,.62fr) minmax(0,1.38fr);gap:clamp(3rem,8vw,8rem)}
+  .story-intro{position:sticky;top:8rem;align-self:start}.story-intro .eyebrow{color:var(--green)}.story-intro h2{margin:1rem 0;font-size:clamp(3rem,5vw,5.5rem);line-height:.9;letter-spacing:-.06em}.story-intro>p:last-child{max-width:22rem;color:var(--muted)}
+  .case-prose{display:grid;grid-template-columns:minmax(8rem,.45fr) minmax(0,1.55fr);align-items:stretch;border-top:1px solid var(--line)}
+  .case-prose :global(h2),.case-prose :global(p){margin:0;padding-block:clamp(1.8rem,4vw,3.5rem);border-bottom:1px solid var(--line)}.case-prose :global(h2){padding-right:2rem;color:var(--green);font-size:.76rem;line-height:1.35;letter-spacing:.13em;text-transform:uppercase}.case-prose :global(p){padding-left:clamp(1.2rem,4vw,3rem);border-left:1px solid var(--line);color:var(--muted);font-size:clamp(1rem,1.4vw,1.2rem);line-height:1.72}
+  .case-footer{position:relative;min-height:27rem;overflow:hidden;background:var(--navy);color:var(--white)}.case-footer .container{position:relative;z-index:2;display:grid;align-content:center;min-height:inherit}.case-footer .eyebrow{color:var(--green-bright)}
+  .case-footer a{display:grid;grid-template-columns:1fr auto;align-items:end;width:min(48rem,100%);margin-top:1.3rem;color:inherit;text-decoration:none}.case-footer a>span:first-child{grid-column:1;font-size:.8rem;text-transform:uppercase;letter-spacing:.1em}.case-footer strong{grid-column:1;font-size:clamp(3rem,7vw,6rem);line-height:.9;letter-spacing:-.06em}.case-footer .arrow{grid-column:2;grid-row:1/3;align-self:center;font-size:3.5rem}.case-footer img{position:absolute;z-index:1;right:-14rem;bottom:-12rem;width:min(64rem,75vw);opacity:.48}.case-footer-word{position:absolute;z-index:0;right:2%;top:2%;color:rgba(255,255,255,.06);font-size:clamp(8rem,20vw,18rem);font-weight:900;line-height:1;letter-spacing:-.08em}
+  @media(max-width:820px){.hero-grid{grid-template-columns:1fr;align-items:start}.hero-mark{grid-template-columns:auto minmax(13rem,1fr);align-items:end;justify-items:stretch}.case-number{font-size:6rem}.logo-panel{justify-self:end}.case-display{top:9%;width:75%;font-size:clamp(6rem,23vw,11rem)}.hero-ribbon{width:56rem;right:-26rem;bottom:-3rem}.story-section>.container{grid-template-columns:1fr}.story-intro{position:static}}
+  @media(max-width:620px){.case-hero{min-height:42rem}.hero-grid{width:100%;min-width:0}.hero-copy{width:100%;min-width:0;overflow:hidden}.hero-copy h1{max-width:100%;font-size:2.4rem;line-height:.92}.hero-copy h1 span{max-width:100%}.hero-summary{max-width:100%;font-size:1rem}.hero-meta{display:grid}.hero-meta span{width:fit-content;max-width:100%}.hero-mark{grid-template-columns:minmax(0,1fr);justify-items:stretch;min-width:0}.logo-panel{justify-self:stretch;width:100%;max-width:100%}.case-number{display:none}.metric-band .container{grid-template-columns:1fr}.metric{min-height:10rem;border-inline-end:1px solid rgba(255,255,255,.25);border-bottom:1px solid rgba(255,255,255,.25)}.case-prose{grid-template-columns:1fr}.case-prose :global(h2){padding-bottom:.5rem;border-bottom:0}.case-prose :global(p){padding-top:.5rem;padding-left:0;border-left:0}.case-footer a{grid-template-columns:1fr auto}}
+</style>

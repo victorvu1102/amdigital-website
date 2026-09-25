@@ -1,42 +1,266 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
+
 const { entry } = Astro.props;
 const { title, summary, eyebrow, number, audience, deliverables, timeline } = entry.data;
-const schema = { '@context':'https://schema.org', '@type':'Service', name:title, description:summary, provider:{'@type':'Organization',name:'AM Digital'}, areaServed:'Worldwide', serviceType:title };
+
+type Step = { title:string; text:string; word:string };
+type Faq = { question:string; answer:string };
+type Config = {
+  tone:'light'|'green'|'dark'; display:string; headline:string; introTitle:string; intro:string;
+  highlights:string[]; sectionTitle:string; steps:Step[]; differentiator:string; proof:string[];
+  ctaTitle:string; ctaLabel:string; faqs:Faq[];
+};
+
+const configs:Record<string,Config> = {
+  'gtm-launch-sprint': {
+    tone:'green', display:'MVP →\nMARKET', headline:'Test your product in market before you scale.',
+    introTitle:'From MVP to global market test, fast.', intro:'We step in as your complete go-to-market function for the sprint—positioning, audiences, campaign setup and live market execution.',
+    highlights:['Strategy to launch in weeks','Global market reach','No full team required'], sectionTitle:'How we operate',
+    steps:[
+      {title:'Strategy and audience',text:'Shape positioning, map audiences and select the markets with the strongest test signal.',word:'POSITION'},
+      {title:'Campaign setup and launch',text:'Build the channel mix, creative system and measurement layer, then go live.',word:'LAUNCH'},
+      {title:'Data and next move',text:'Read real market performance and hand over every asset, audience and learning.',word:'SCALE'},
+    ],
+    differentiator:'Global market reach without long onboarding.', proof:['Multiple markets in parallel','From strategy to live campaigns','Every asset stays with you'],
+    ctaTitle:'Your product is ready. Let’s get it into market.', ctaLabel:'Launch your sprint',
+    faqs:[
+      {question:'Is this suitable for an MVP with no marketing team?',answer:'Yes. The sprint is designed to take a ready product from positioning to real campaign data without requiring a full internal team.'},
+      {question:'Which markets can you launch in?',answer:'We operate across Vietnam, Southeast Asia, the US, Europe, India and LATAM, selecting the mix that best fits the test.'},
+      {question:'How long does it take?',answer:'Typically four to six weeks from strategy sign-off to live campaigns and first performance data.'},
+    ],
+  },
+  'growth-operations': {
+    tone:'dark', display:'ALONGSIDE\nYOU', headline:'A specialist operations team working inside your growth motion.',
+    introTitle:'Specialist operations, running inside your growth motion.', intro:'We join your existing workflow, align on priorities and bring strategic judgment across campaigns, experiments, analytics and reporting.',
+    highlights:['Inside your growth motion','Full execution coverage','Experiments, ads and reporting'], sectionTitle:'What we run',
+    steps:[
+      {title:'Experiment execution',text:'Plan and run experiments across the growth motion, turning ideas into real results.',word:'TEST'},
+      {title:'Ads and campaign management',text:'Operate Meta, Google and TikTok as an active testing system with weekly creative iteration.',word:'RUN'},
+      {title:'Data analytics and reporting',text:'Translate performance across markets into clear decisions and the next move.',word:'READ'},
+    ],
+    differentiator:'Embedded, not external.', proof:['We operate alongside you','Faster experimentation','Full coverage without the overhead'],
+    ctaTitle:'Ready for an execution team running inside your growth?', ctaLabel:'Let’s talk retainer',
+    faqs:[
+      {question:'How is this different from an agency retainer?',answer:'A conventional retainer sits outside the team. This model works inside your priorities, systems and decision cadence.'},
+      {question:'Can this work with an existing growth team?',answer:'Yes. Your growth lead keeps direction while AM provides the specialist capacity and operating rhythm.'},
+      {question:'Can we start with a sprint?',answer:'Yes. A launch or diagnostic sprint can establish priorities before moving into an ongoing operating model.'},
+    ],
+  },
+  'ai-automation': {
+    tone:'light', display:'OWNED', headline:'AI agents and automation across your whole marketing operation.',
+    introTitle:'Your full operation mapped and automated.', intro:'We identify manual processes, design the right AI agents and connect them into one end-to-end system—documented and owned by your team.',
+    highlights:['Full workflow mapping','Multi-process automation','Complete documentation'], sectionTitle:'How we operate',
+    steps:[
+      {title:'Map the full operation',text:'Identify exactly where human time is being spent and where automation should take over.',word:'MAP'},
+      {title:'Design and connect the agents',text:'Configure the right AI tools and join them into one coherent operating stack.',word:'CONNECT'},
+      {title:'Document, test and hand over',text:'Give your team a system it can run, adjust and expand independently.',word:'HANDOVER'},
+    ],
+    differentiator:'Workflow first. Tools second.', proof:['Connected across the stack','Full ownership from day one','Built for daily operations'],
+    ctaTitle:'Ready to see your operation without the manual work?', ctaLabel:'Map my operation',
+    faqs:[
+      {question:'How is this different from a standalone workflow?',answer:'A buildout maps the whole operation and connects several processes, rather than automating one isolated task.'},
+      {question:'Which tools do you work with?',answer:'The stack is chosen around the workflow and may include ChatGPT, Claude, Perplexity, n8n, Zapier, Canva and specialist platforms.'},
+      {question:'Does our team need technical skills?',answer:'No. The system is documented in operational language and handed over with clear ownership and controls.'},
+    ],
+  },
+  'influencer-ugc': {
+    tone:'dark', display:'CREATE', headline:'Need one area of your marketing run properly?',
+    introTitle:'Bring in the specialist.', intro:'We source, brief and manage creators across global markets—from campaign kickoff through content delivery, approvals and payment.',
+    highlights:['Global creator sourcing','Campaign management','Rights and payment operations'], sectionTitle:'What we run',
+    steps:[
+      {title:'Source the right creators',text:'Build a relevant pool across markets, niches, formats and audience profiles.',word:'SOURCE'},
+      {title:'Run the campaign operation',text:'Manage briefs, timelines, approvals, content quality and creator communication.',word:'CREATE'},
+      {title:'Deliver ready-to-use assets',text:'Clear usage rights, handle payments and organize content for paid amplification.',word:'SCALE'},
+    ],
+    differentiator:'One channel. One accountable operation.', proof:['Fresh creator supply','Global market coverage','Paid-ready content'],
+    ctaTitle:'Need creator marketing run properly?', ctaLabel:'Explore the service',
+    faqs:[
+      {question:'Can you run a single campaign?',answer:'Yes. Engagements can be scoped around one launch, market or campaign objective.'},
+      {question:'Which markets do you cover?',answer:'We support creator operations across the US, Europe, India, LATAM and Southeast Asia.'},
+      {question:'Do you handle creator payments and rights?',answer:'Yes. Payment coordination, usage rights and asset delivery are part of the operating workflow.'},
+    ],
+  },
+  'seo-aeo-geo': {
+    tone:'light', display:'FOUND', headline:'Build visibility across search and AI answers.',
+    introTitle:'One authority system for Google and AI discovery.', intro:'Technical SEO, answer-engine optimization and generative-engine visibility work together so your brand can be found, cited and recommended.',
+    highlights:['Search demand mapping','Topical authority','AI citation readiness'], sectionTitle:'How visibility compounds',
+    steps:[
+      {title:'Map demand and authority gaps',text:'Find the questions, entities and topics shaping buyer research.',word:'MAP'},
+      {title:'Build the content system',text:'Create connected topic clusters, strong evidence and technically clear pages.',word:'BUILD'},
+      {title:'Earn visibility and citations',text:'Strengthen authority signals across search results and AI-generated answers.',word:'CITE'},
+    ],
+    differentiator:'Search strategy built for the way people discover now.', proof:['Google rankings','Answer-engine coverage','Generative search visibility'],
+    ctaTitle:'Ready to be found, cited and recommended?', ctaLabel:'Map your visibility',
+    faqs:[
+      {question:'What is the difference between SEO, AEO and GEO?',answer:'SEO improves conventional search visibility, AEO targets direct answer surfaces, and GEO improves the likelihood of inclusion in generative responses.'},
+      {question:'Can you support a new market entry?',answer:'Yes. We combine market-specific demand research with localized content and authority building.'},
+      {question:'How is success measured?',answer:'We track rankings, qualified organic demand, answer visibility, citations and the quality of downstream conversions.'},
+    ],
+  },
+};
+
+const config = configs[entry.id] ?? configs['influencer-ugc'];
+const schema = [
+  { '@context':'https://schema.org', '@type':'Service', name:title, description:summary, provider:{'@type':'Organization',name:'AM Digital'}, areaServed:'Worldwide', serviceType:title },
+  { '@context':'https://schema.org', '@type':'FAQPage', mainEntity:config.faqs.map((faq)=>({'@type':'Question',name:faq.question,acceptedAnswer:{'@type':'Answer',text:faq.answer}})) },
+];
 ---
+
 <BaseLayout {title} description={summary} {schema}>
   <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Services',href:'/services/'},{label:title,href:`/services/${entry.id}/`}]} />
-  <article>
-    <header class="service-head surface-green">
-      <div class="container">
-        <div class="service-meta"><span>{number}</span><span>{eyebrow}</span><span>{timeline}</span></div>
-        <h1>{title}</h1>
-        <p>{summary}</p>
+  <article class:list={['service-page', `service-page--${config.tone}`]}>
+    <header class="service-hero" aria-labelledby="service-title">
+      <div class="service-display" aria-hidden="true">{config.display.split('\n').map(line => <span>{line}</span>)}</div>
+      <div class="container service-hero-inner">
+        <div class="service-hero-copy" data-reveal>
+          <p class="eyebrow"><span>{number}</span> · {eyebrow}</p>
+          <h1 id="service-title">{config.headline}</h1>
+          <p>{summary}</p>
+          <a class="button" href="/contact/">{config.ctaLabel} <span aria-hidden="true">→</span></a>
+        </div>
       </div>
+      <img src="/images/am-green-ribbon-v2.webp" width="1800" height="600" alt="" fetchpriority="high" decoding="async" />
     </header>
-    <div class="service-body container">
-      <div class="prose"><slot /></div>
-      <aside>
-        <p class="eyebrow">What we deliver</p>
-        <ul>{deliverables.map((item:string) => <li>{item}</li>)}</ul>
-        <p class="eyebrow">Built for</p>
-        <div class="tags">{audience.map((item:string) => <span class="tag">{item}</span>)}</div>
-      </aside>
-    </div>
+
+    <section class="service-intro section" aria-labelledby="service-intro-title">
+      <div class="container">
+        <h2 id="service-intro-title">{config.introTitle}</h2>
+        <p>{config.intro}</p>
+        <ul>{config.highlights.map(item => <li>{item}</li>)}</ul>
+      </div>
+    </section>
+
+    <section class="operations" aria-labelledby="operations-title">
+      <div class="container operations-head"><p class="eyebrow">{config.sectionTitle}</p><h2 id="operations-title">{config.sectionTitle}.</h2></div>
+      <ol>
+        {config.steps.map((step,index) => (
+          <li>
+            <div class="container operation-row">
+              <span class="step-number">0{index+1}</span>
+              <div><h3>{step.title}</h3><p>{step.text}</p></div>
+              <strong aria-hidden="true">{step.word}</strong>
+            </div>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section class="service-audience" aria-labelledby="audience-title">
+      <div class="container audience-grid">
+        <div><p class="eyebrow">Built for</p><h2 id="audience-title">{config.differentiator}</h2></div>
+        <div class="audience-tags">{audience.map((item:string) => <span>{item}</span>)}</div>
+      </div>
+    </section>
+
+    <section class="proof-section" aria-labelledby="proof-title">
+      <div class="container proof-grid">
+        <div><p class="eyebrow">What sets us apart</p><h2 id="proof-title">Full ownership.<br /><span>From day one.</span></h2></div>
+        <div>{config.proof.map((item) => <p>{item}</p>)}</div>
+      </div>
+    </section>
+
+    <section class="deliverables-section" aria-labelledby="deliverables-title">
+      <div class="container deliverables-grid">
+        <div><p class="eyebrow">What you get</p><h2 id="deliverables-title">The complete operating layer.</h2><span>{timeline}</span></div>
+        <ol>{deliverables.map((item:string,index:number) => <li><span>0{index+1}</span>{item}</li>)}</ol>
+      </div>
+    </section>
+
+    <section class="faq-section" aria-labelledby="faq-title">
+      <div class="container faq-grid">
+        <div><p class="eyebrow">FAQ</p><h2 id="faq-title">Common questions</h2></div>
+        <div class="faq-list">{config.faqs.map((faq,index) => <details open={index === 0}><summary>{faq.question}<span aria-hidden="true">+</span></summary><p>{faq.answer}</p></details>)}</div>
+      </div>
+    </section>
+
+    <section class="service-cta" aria-labelledby="service-cta-title">
+      <div class="service-cta-display" aria-hidden="true">READY</div>
+      <div class="container"><div><h2 id="service-cta-title">{config.ctaTitle}</h2><a class="button" href="/contact/">{config.ctaLabel} <span aria-hidden="true">→</span></a></div></div>
+      <img src="/images/am-green-ribbon-v2.webp" width="1800" height="600" alt="" loading="lazy" decoding="async" />
+    </section>
   </article>
 </BaseLayout>
+
 <style>
-  .service-head { padding: clamp(5rem,10vw,9rem) 0; }
-  .service-head h1 { max-width: 10ch; }
-  .service-head > div > p { max-width: 48rem; margin-top: 2rem; }
-  .service-meta { display: flex; justify-content: space-between; gap: 1rem; margin-bottom: 3rem; font-size: .78rem; text-transform: uppercase; letter-spacing: .1em; }
-  .service-body { display: grid; grid-template-columns: minmax(0,1.5fr) minmax(18rem,1fr); gap: clamp(3rem,8vw,8rem); padding-block: var(--space-section); }
-  .prose :global(h2) { margin: 3rem 0 1rem; font-size: clamp(2rem,4vw,4rem); }
-  .prose :global(p) { margin-block: 1rem; max-width: 46rem; }
-  aside { padding: 2rem; align-self: start; background: var(--white); border: 1px solid var(--line); border-radius: var(--radius); }
-  aside ul { margin: 1.5rem 0 2.5rem; padding-left: 1.2rem; }
-  aside li { padding-block: .45rem; border-bottom: 1px solid var(--line); font-size: .95rem; }
-  .tags { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1rem; }
-  @media (max-width: 760px) { .service-body { grid-template-columns: 1fr; } .service-meta { flex-direction: column; } }
+  :global(.breadcrumbs) { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+  .service-page { --hero-bg:#fff; --hero-fg:var(--ink); --hero-display:var(--display-light); background:#fff; }
+  .service-page--green { --hero-bg:var(--green-bright); --hero-fg:var(--ink); --hero-display:rgba(255,255,255,.8); }
+  .service-page--dark { --hero-bg:var(--navy); --hero-fg:#fff; --hero-display:rgba(0,126,40,.72); }
+  .service-hero { position:relative; min-height:29rem; overflow:hidden; background:var(--hero-bg); color:var(--hero-fg); }
+  .service-hero-inner { position:relative; z-index:2; min-height:29rem; display:flex; align-items:center; padding-block:3.25rem 5.5rem; }
+  .service-hero-copy { width:min(42rem,58%); }
+  .service-hero h1 { max-width:19ch; margin:.8rem 0 1.35rem; font-size:clamp(3.4rem,5.5vw,5.8rem); }
+  .service-hero-copy > p:not(.eyebrow) { max-width:37rem; margin-bottom:1.8rem; color:color-mix(in srgb,var(--hero-fg) 72%,transparent); }
+  .service-page--dark .service-hero-copy > p:not(.eyebrow) { color:#d7e1e7; }
+  .service-display { position:absolute; z-index:0; top:1.25rem; left:63%; right:2rem; color:var(--hero-display); font-size:clamp(3.6rem,6.2vw,7.25rem); font-weight:900; line-height:.72; letter-spacing:-.085em; text-align:right; user-select:none; }
+  .service-display span { display:block; }
+  .service-hero > img { position:absolute; z-index:1; right:-18rem; bottom:-8rem; width:min(86rem,95vw); filter:saturate(.7) brightness(1.06); opacity:.8; pointer-events:none; }
+  .service-intro { padding-block:clamp(3rem,6vw,5.25rem); text-align:center; }
+  .service-intro h2 { max-width:21ch; margin-inline:auto; font-size:clamp(2.8rem,4.7vw,4.8rem); }
+  .service-intro > .container > p { max-width:62rem; margin:1.25rem auto 0; color:var(--muted); }
+  .service-intro ul { display:grid; grid-template-columns:repeat(3,1fr); margin:2.5rem 0 0; padding:0; list-style:none; border-top:1px solid var(--line); }
+  .service-intro li { padding:1.4rem 1rem; border-left:1px solid var(--line); font-weight:800; }
+  .service-intro li:first-child { border-left:0; }
+  .operations-head { padding:2.5rem 0 1.5rem; }
+  .operations-head h2 { margin-top:.55rem; font-size:clamp(2.8rem,4.6vw,4.7rem); }
+  .operations ol { margin:0; padding:0; list-style:none; }
+  .operations li { min-height:14rem; border-top:1px solid var(--line); background:#fff; }
+  .operations li:nth-child(2) { background:var(--navy); color:#fff; }
+  .operations li:nth-child(3) { background:var(--green-soft); }
+  .operation-row { min-height:14rem; display:grid; grid-template-columns:5rem minmax(18rem,30rem) minmax(0,1fr); gap:2rem; align-items:center; }
+  .step-number { position:relative; z-index:2; color:var(--green); font-size:clamp(2.5rem,4vw,4rem); font-weight:850; }
+  .operation-row > div { position:relative; z-index:2; }
+  .operation-row h3 { margin-bottom:.65rem; font-size:clamp(1.7rem,2.6vw,2.8rem); }
+  .operation-row p { color:var(--muted); line-height:1.45; }
+  .operations li:nth-child(2) .operation-row p { color:#cbd8df; }
+  .operation-row strong { justify-self:end; max-width:100%; color:var(--display-light); font-size:clamp(3.4rem,7vw,7.5rem); font-weight:900; line-height:.75; letter-spacing:-.08em; white-space:nowrap; opacity:.8; user-select:none; }
+  .operations li:nth-child(2) .operation-row strong { color:rgba(0,126,40,.65); opacity:1; }
+  .service-audience { padding:3.5rem 0; background:var(--navy); color:#fff; }
+  .audience-grid { display:grid; grid-template-columns:.9fr 1.1fr; gap:4rem; align-items:center; }
+  .audience-grid h2 { max-width:13ch; margin-top:.65rem; font-size:clamp(2.7rem,4vw,4.25rem); }
+  .audience-tags { display:flex; flex-wrap:wrap; gap:.75rem; }
+  .audience-tags span { padding:.75rem 1rem; border:1px solid rgba(255,255,255,.4); border-radius:999px; font-weight:750; }
+  .proof-section { padding:4rem 0; }
+  .proof-grid { display:grid; grid-template-columns:1fr 1.1fr; gap:5rem; align-items:center; }
+  .proof-grid h2 { max-width:12ch; margin-top:.7rem; font-size:clamp(2.8rem,4.5vw,4.7rem); }
+  .proof-grid h2 span { color:var(--green-bright); }
+  .proof-grid > div:last-child p { padding:1rem 0; border-bottom:1px solid var(--line); font-size:1.2rem; font-weight:800; }
+  .deliverables-section { padding:4rem 0; background:var(--green-soft); }
+  .deliverables-grid { display:grid; grid-template-columns:.8fr 1.2fr; gap:5rem; }
+  .deliverables-grid h2 { max-width:12ch; margin:.7rem 0 1rem; font-size:clamp(2.6rem,4vw,4.2rem); }
+  .deliverables-grid > div > span { color:var(--green); font-weight:850; }
+  .deliverables-grid ol { margin:0; padding:0; list-style:none; }
+  .deliverables-grid li { display:grid; grid-template-columns:4rem 1fr; gap:1rem; padding:1rem 0; border-bottom:1px solid rgba(7,26,45,.2); font-weight:800; }
+  .deliverables-grid li span { color:var(--green); }
+  .faq-section { padding:4rem 0; background:var(--navy); color:#fff; }
+  .faq-grid { display:grid; grid-template-columns:.7fr 1.3fr; gap:5rem; }
+  .faq-grid h2 { max-width:8ch; margin-top:.7rem; font-size:clamp(3rem,5vw,5rem); }
+  .faq-list details { border-bottom:1px solid rgba(255,255,255,.42); }
+  .faq-list summary { display:flex; justify-content:space-between; gap:1rem; padding:1rem 0; cursor:pointer; font-weight:750; list-style:none; }
+  .faq-list summary::-webkit-details-marker { display:none; }
+  .faq-list details[open] summary { color:var(--green-bright); }
+  .faq-list details[open] summary span { transform:rotate(45deg); }
+  .faq-list details p { max-width:48rem; padding:0 3rem 1rem 0; color:#cbd8df; font-size:.95rem; }
+  .service-cta { position:relative; min-height:22rem; overflow:hidden; background:var(--green-bright); }
+  .service-cta > .container { position:relative; z-index:2; min-height:22rem; display:flex; align-items:center; padding-block:3rem; }
+  .service-cta h2 { max-width:14ch; margin-bottom:1.5rem; font-size:clamp(3rem,5vw,5.2rem); }
+  .service-cta-display { position:absolute; z-index:0; right:2%; top:1rem; color:rgba(255,255,255,.7); font-size:clamp(6rem,14vw,15rem); font-weight:900; letter-spacing:-.09em; line-height:.8; user-select:none; }
+  .service-cta > img { position:absolute; z-index:1; right:-22rem; bottom:-10rem; width:min(82rem,90vw); filter:saturate(.7) brightness(1.08); opacity:.78; }
+  @media (max-width:800px) {
+    .service-hero { min-height:44rem; }
+    .service-hero-inner { min-height:44rem; align-items:flex-start; padding-top:4rem; padding-bottom:14rem; }
+    .service-hero-copy { width:100%; }
+    .service-display { top:auto; left:28%; right:1rem; bottom:3rem; font-size:clamp(3.4rem,15vw,5.5rem); opacity:.72; }
+    .service-hero > img { right:-34rem; bottom:-2rem; width:68rem; max-width:none; }
+    .service-intro ul,.audience-grid,.proof-grid,.deliverables-grid,.faq-grid { grid-template-columns:1fr; }
+    .service-intro li { border-left:0; border-top:1px solid var(--line); }
+    .service-intro li:first-child { border-top:0; }
+    .operation-row { grid-template-columns:4rem 1fr; grid-template-rows:auto auto; padding-block:2rem; }
+    .operation-row strong { grid-column:1/-1; grid-row:2; justify-self:end; font-size:clamp(3.3rem,14vw,5rem); white-space:normal; overflow-wrap:anywhere; }
+    .audience-grid,.proof-grid,.deliverables-grid,.faq-grid { gap:2.5rem; }
+    .service-cta-display { top:auto; bottom:1rem; font-size:7rem; }
+    .service-cta > img { right:-32rem; opacity:.5; }
+  }
 </style>

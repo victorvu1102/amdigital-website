@@ -5,7 +5,7 @@ export const organizationSchema = (origin: URL) => ({
   name: 'AM Digital',
   alternateName: 'AM Outsourcing Services Joint Stock Company',
   url: origin.toString(),
-  email: 'contact@amdigital.ninja',
+  email: 'info@amdigital.ninja',
   foundingDate: '2015',
   description: 'AI-powered GTM operations agency serving DTC ecommerce, technology and global market-entry teams.',
   address: {

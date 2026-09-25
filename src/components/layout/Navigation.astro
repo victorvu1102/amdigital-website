@@ -1,17 +1,94 @@
+---
+const pathname = Astro.url.pathname;
+const isActive = (href:string) => href === '/' ? pathname === '/' : pathname.startsWith(href);
+
+const services = [
+  { href:'/services/', title:'All services', description:'Choose the right engagement model.' },
+  { href:'/services/gtm-launch-sprint/', title:'GTM Launch Sprint', description:'Launch and test in 4–6 weeks.' },
+  { href:'/services/growth-operations/', title:'Growth Operations', description:'Embedded execution and reporting.' },
+  { href:'/services/ai-automation/', title:'AI Automation Buildout', description:'Connected workflows your team owns.' },
+  { href:'/services/influencer-ugc/', title:'Influencer & UGC', description:'Global creator campaign operations.' },
+  { href:'/services/seo-aeo-geo/', title:'SEO, AEO & GEO', description:'Visibility across search and AI.' },
+];
+---
+
 <nav id="primary-navigation" class="nav" aria-label="Primary navigation">
-  <a href="/services/">Services</a>
-  <a href="/case-studies/">Work</a>
-  <a href="/insights/">Insights</a>
-  <a href="/about/">About</a>
-  <a class="nav-cta" href="/contact/">Start a conversation</a>
+  <a class:list={{ active:isActive('/') }} aria-current={isActive('/') ? 'page' : undefined} href="/">Home</a>
+  <a class:list={{ active:isActive('/about/') }} aria-current={isActive('/about/') ? 'page' : undefined} href="/about/">About</a>
+
+  <details class:list={['nav-dropdown', isActive('/services/') && 'active']}>
+    <summary aria-label="Open Services menu">Services <span aria-hidden="true">⌄</span></summary>
+    <div class="submenu" aria-label="Services navigation">
+      <div class="submenu-intro">
+        <p class="eyebrow">Services</p>
+        <strong>Choose how deep you want us in.</strong>
+        <a href="/services/">Explore all services <span aria-hidden="true">→</span></a>
+      </div>
+      <div class="submenu-links">
+        {services.slice(1).map((service) => (
+          <a class:list={{ active:isActive(service.href) }} aria-current={isActive(service.href) ? 'page' : undefined} href={service.href}>
+            <strong>{service.title}</strong>
+            <span>{service.description}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+  </details>
+
+  <a class:list={{ active:isActive('/case-studies/') }} aria-current={isActive('/case-studies/') ? 'page' : undefined} href="/case-studies/">Case studies</a>
+  <a class:list={{ active:isActive('/insights/') }} aria-current={isActive('/insights/') ? 'page' : undefined} href="/insights/">Insights</a>
+  <a class:list={{ active:isActive('/contact/') }} aria-current={isActive('/contact/') ? 'page' : undefined} href="/contact/">Contact</a>
+  <a class="nav-cta" href="/contact/">Schedule a call</a>
 </nav>
+
+<script>
+  const dropdown = document.querySelector<HTMLDetailsElement>('.nav-dropdown');
+  const summary = dropdown?.querySelector<HTMLElement>('summary');
+  document.addEventListener('click', (event) => {
+    if (dropdown?.open && event.target instanceof Node && !dropdown.contains(event.target)) dropdown.open = false;
+  });
+  dropdown?.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      dropdown.open = false;
+      summary?.focus();
+    }
+  });
+</script>
+
 <style>
-  .nav { display: flex; align-items: center; gap: clamp(1rem, 2vw, 2rem); }
-  .nav a { font-size: .84rem; font-weight: 750; text-decoration: none; }
-  .nav-cta { padding: .7rem 1rem; border-radius: 999px; background: var(--green); color: var(--ink); }
-  @media (max-width: 760px) {
-    .nav { display: none; position: absolute; inset: 100% 0 auto; padding: 1rem; background: var(--paper); border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; }
-    .nav.is-open { display: flex; }
-    .nav a { padding: .7rem; font-size: 1.1rem; }
+  .nav { display:flex; align-items:center; gap:clamp(1rem,2vw,2rem); }
+  .nav > a,.nav summary { font-size:.84rem; font-weight:750; text-decoration:none; }
+  .nav > a:not(.nav-cta):hover,.nav > a.active,.nav-dropdown.active > summary,.nav summary:hover { color:var(--green); }
+  .nav-cta { padding:.75rem 1.35rem; border-radius:999px; background:var(--green); color:#fff; }
+  .nav-dropdown { position:relative; }
+  .nav-dropdown::after { content:""; position:absolute; top:100%; left:-.75rem; right:-.75rem; height:1rem; }
+  .nav-dropdown summary { display:flex; align-items:center; gap:.35rem; padding:.6rem 0; cursor:pointer; list-style:none; }
+  .nav-dropdown summary::-webkit-details-marker { display:none; }
+  .nav-dropdown summary span { display:inline-block; transition:transform .2s ease; }
+  .nav-dropdown[open] summary span { transform:rotate(180deg); }
+  .submenu { position:absolute; top:calc(100% + .75rem); left:50%; width:min(46rem,calc(100vw - 2rem)); padding:1rem; display:none; grid-template-columns:14rem 1fr; gap:1rem; border:1px solid var(--line); border-radius:1rem; background:var(--white); color:var(--ink); box-shadow:0 1.25rem 3.5rem rgba(7,19,31,.16); transform:translateX(-35%); }
+  .nav-dropdown[open] .submenu,.nav-dropdown:hover .submenu,.nav-dropdown:focus-within .submenu { display:grid; }
+  .submenu-intro { padding:1.25rem; border-radius:.75rem; background:var(--green-soft); }
+  .submenu-intro strong { display:block; margin:.7rem 0 1.5rem; font-size:1.45rem; line-height:1; letter-spacing:-.045em; }
+  .submenu-intro a { display:inline-flex; gap:.75rem; color:var(--green); font-size:.82rem; font-weight:850; text-decoration:none; }
+  .submenu-links { display:grid; grid-template-columns:1fr 1fr; }
+  .submenu-links a { padding:1rem; border-radius:.7rem; text-decoration:none; }
+  .submenu-links a:hover,.submenu-links a:focus-visible,.submenu-links a.active { background:var(--mint); color:var(--green-dark); }
+  .submenu-links strong,.submenu-links span { display:block; }
+  .submenu-links strong { font-size:.92rem; line-height:1.2; }
+  .submenu-links span { margin-top:.35rem; color:var(--muted); font-size:.75rem; line-height:1.35; }
+  @media (max-width:700px) {
+    .nav { display:none; position:absolute; inset:100% 0 auto; max-height:calc(100vh - 4.6rem); overflow-y:auto; padding:1rem; background:var(--paper); border-bottom:1px solid var(--line); flex-direction:column; align-items:stretch; }
+    .nav.is-open { display:flex; }
+    .nav > a,.nav summary { padding:.7rem; font-size:1.1rem; }
+    .nav-dropdown { width:100%; }
+    .nav-dropdown::after { display:none; }
+    .nav-dropdown summary { justify-content:space-between; }
+    .nav-dropdown:hover .submenu:not(:focus-within) { display:none; }
+    .nav-dropdown[open] .submenu,.nav-dropdown[open]:hover .submenu { position:static; width:100%; margin:.25rem 0 .75rem; padding:.5rem; display:grid; grid-template-columns:1fr; box-shadow:none; transform:none; }
+    .submenu-intro { padding:1rem; }
+    .submenu-links { grid-template-columns:1fr; }
+    .submenu-links a { padding:.85rem 1rem; }
+    .nav-cta { text-align:center; }
   }
 </style>
