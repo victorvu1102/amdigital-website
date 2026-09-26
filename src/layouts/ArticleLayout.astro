@@ -2,10 +2,10 @@
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
 const { title, description, publishedAt, updatedAt, topic, readingTime, slug } = Astro.props;
-const articleSchema = { '@context':'https://schema.org', '@type':'Article', headline:title, description, datePublished:publishedAt.toISOString(), dateModified:(updatedAt ?? publishedAt).toISOString(), author:{'@type':'Organization',name:'AM Digital'}, publisher:{'@type':'Organization',name:'AM Digital'}, mainEntityOfPage:new URL(`/insights/${slug}/`, Astro.site).toString() };
+const articleSchema = { '@context':'https://schema.org', '@type':'Article', headline:title, description, datePublished:publishedAt.toISOString(), dateModified:(updatedAt ?? publishedAt).toISOString(), author:{'@type':'Organization',name:'AM Digital'}, publisher:{'@type':'Organization',name:'AM Digital'}, mainEntityOfPage:new URL(`/blog/${slug}/`, Astro.site).toString() };
 ---
 <BaseLayout {title} {description} type="article" schema={articleSchema}>
-  <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Insights',href:'/insights/'},{label:title,href:`/insights/${slug}/`}]} />
+  <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog/'},{label:title,href:`/blog/${slug}/`}]} />
   <article>
     <header class="article-head surface-dark">
       <div class="container">
