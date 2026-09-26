@@ -34,7 +34,10 @@ const services = [
   .service-band { min-height: 10rem; overflow:hidden; border-top:1px solid var(--line); }
   .service-band--white { background:#fff; }
   .service-band--mint { background:var(--silver-soft); }
-  .service-band--green { background:var(--navy); color:var(--white); }
+  .service-band--green {
+    background:linear-gradient(110deg, var(--green-dark) 0%, var(--green) 55%, #07983a 100%);
+    color:var(--white);
+  }
   .service-band--dark { background:var(--ink); color:#fff; }
   .band-inner { position:relative; display:grid; grid-template-columns:8.5rem minmax(18rem, 27rem) minmax(0, 1fr); align-items:center; min-height:10rem; }
   .number { position:relative; z-index:1; color:var(--display-light); font-size:clamp(5rem, 8vw, 7.5rem); font-weight:900; letter-spacing:-.08em; line-height:.75; opacity:.78; }
@@ -45,10 +48,12 @@ const services = [
   .service-band--dark .service-copy p, .service-band--green .service-copy p { color:#c8d0d8; }
   .service-copy a { display:inline-flex; gap:1.5rem; color:var(--green); font-weight:850; text-decoration:none; }
   .service-band--dark .service-copy a { color:var(--green); }
-  .service-band--green .service-copy a { color:var(--green-bright); }
+  .service-band--green .service-copy a { color:var(--white); }
   .band-inner > strong { position:relative; z-index:1; grid-column:3; justify-self:end; max-width:100%; color:var(--display-light); font-size:clamp(3.5rem, 6.5vw, 7rem); font-weight:900; line-height:.78; letter-spacing:-.08em; white-space:nowrap; opacity:.72; user-select:none; }
   .band-inner > .service-word--long { padding-right:.25rem; font-size:clamp(2.65rem, 4.8vw, 5.25rem); }
-  .service-band--green strong, .service-band--dark strong { color:var(--display-dark); opacity:1; }
+  .service-band--green .number,
+  .service-band--green strong { color:rgba(216, 240, 223, .30); opacity:1; }
+  .service-band--dark strong { color:var(--display-dark); opacity:1; }
   @media (max-width:700px) {
     .band-inner { grid-template-columns:5.5rem 1fr; grid-template-rows:auto auto; min-height:18rem; }
     .band-inner > strong, .band-inner > .service-word--long { grid-column:1 / -1; grid-row:2; justify-self:end; padding:.25rem 0 .85rem; font-size:clamp(3rem, 13vw, 4.5rem); opacity:.62; }
