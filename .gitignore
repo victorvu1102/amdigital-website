@@ -6,3 +6,12 @@ dist/
 .env
 mockups-contact-sheet.jpg
 *.zip
+
+# Local design QA and generated working files
+/*.png
+/design-qa/
+/design-qa.md
+/layout-audit.md
+/public/design-qa-source/
+/scripts/
+/tmp/

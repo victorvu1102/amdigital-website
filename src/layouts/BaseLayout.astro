@@ -1,6 +1,7 @@
 ---
 import Header from '../components/layout/Header.astro';
 import Footer from '../components/layout/Footer.astro';
+import ChatLive from '../components/layout/ChatLive.astro';
 import SEO from '../components/seo/SEO.astro';
 import Schema from '../components/seo/Schema.astro';
 import { organizationSchema } from '../utils/schema';
@@ -25,6 +26,7 @@ const schemas = schema ? [organizationSchema(Astro.site!), ...(Array.isArray(sch
     <Header />
     <main id="main-content"><slot /></main>
     <Footer />
+    <ChatLive />
     <script>
       import { initScrollAnimation } from '../components/interactive/ScrollAnimation';
       initScrollAnimation();
