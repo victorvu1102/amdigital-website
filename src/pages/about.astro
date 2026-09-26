@@ -168,8 +168,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .story-ending { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:clamp(2rem,6vw,6rem); margin-top:clamp(2.75rem,5vw,4.5rem); padding-top:clamp(2.25rem,4vw,3.5rem); border-top:1px solid rgba(0,126,40,.25); }
   .story-ending p { color:var(--muted); line-height:1.7; }
   .story-ending p:last-child { color:var(--ink); font-weight:700; }
-  .metrics-section { background:var(--navy); color:var(--white); }
-  .metrics-grid { display:grid; grid-template-columns:repeat(3,1fr); }
+  .metrics-section { background:var(--white); color:var(--white); }
+  .metrics-grid { display:grid; grid-template-columns:repeat(3,1fr); overflow:hidden; background:var(--navy); }
   .metrics-grid > div { display:grid; min-height:11rem; place-content:center; padding:2rem; border-inline-start:1px solid rgba(255,255,255,.2); text-align:center; }
   .metrics-grid > div:last-child { border-inline-end:1px solid rgba(255,255,255,.2); }
   .metrics-grid strong { color:var(--green-bright); font-size:clamp(2.6rem,5vw,4.5rem); line-height:1; letter-spacing:-.06em; }
