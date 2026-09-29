@@ -2,7 +2,7 @@
 title: Mode Chocolate
 category: Zero-Sugar DTC Food Brand
 market: Canada
-summary: Mode Chocolate is a Toronto-based DTC brand making all-natural chocolate bars sweetened with monk fruit — 94% less sugar than traditional chocolate, keto-certified, gluten-free, and non-GMO.
+summary: How Mode Chocolate built creator-led authority, millions of organic views and an expanding retail network without paid media.
 order: 1
 metrics:
   - { value: "3+", label: "Years Together" }

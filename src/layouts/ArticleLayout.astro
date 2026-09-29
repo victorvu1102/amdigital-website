@@ -1,15 +1,20 @@
 ---
 import BaseLayout from './BaseLayout.astro';
 import Breadcrumbs from '../components/seo/Breadcrumbs.astro';
-const { title, description, publishedAt, updatedAt, topic, readingTime, slug } = Astro.props;
-const articleSchema = { '@context':'https://schema.org', '@type':'Article', headline:title, description, datePublished:publishedAt.toISOString(), dateModified:(updatedAt ?? publishedAt).toISOString(), author:{'@type':'Organization',name:'AM Digital'}, publisher:{'@type':'Organization',name:'AM Digital'}, mainEntityOfPage:new URL(`/blog/${slug}/`, Astro.site).toString() };
+import { getEntry } from 'astro:content';
+const { title, description, publishedAt, updatedAt, topic, readingTime, slug, author } = Astro.props;
+const authorEntry = await getEntry('authors', author);
+const authorName = authorEntry?.data.name ?? 'AM Digital Team';
+const authorUrl = new URL(`/authors/#${author}`, Astro.site).toString();
+const organizationId = new URL('/#organization', Astro.site).toString();
+const articleSchema = { '@context':'https://schema.org', '@type':'Article', headline:title, description, datePublished:publishedAt.toISOString(), dateModified:(updatedAt ?? publishedAt).toISOString(), author:{'@type':'Organization','@id':authorUrl,name:authorName,url:authorUrl}, publisher:{'@type':'Organization','@id':organizationId,name:'AM Digital'}, mainEntityOfPage:new URL(`/blog/${slug}/`, Astro.site).toString() };
 ---
 <BaseLayout {title} {description} type="article" schema={articleSchema}>
   <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog/'},{label:title,href:`/blog/${slug}/`}]} />
   <article>
     <header class="article-head surface-dark">
       <div class="container">
-        <div class="meta"><span>{topic}</span><span>{readingTime}</span><time datetime={publishedAt.toISOString()}>{publishedAt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</time></div>
+        <div class="meta"><span>{topic}</span><span>{readingTime}</span><a href={`/authors/#${author}`} rel="author">{authorName}</a><time datetime={publishedAt.toISOString()}>{publishedAt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</time></div>
         <h1>{title}</h1>
         <p>{description}</p>
       </div>
@@ -22,6 +27,7 @@ const articleSchema = { '@context':'https://schema.org', '@type':'Article', head
   .article-head h1 { max-width: 12ch; font-size: clamp(3rem,8vw,7rem); }
   .article-head p { margin-top: 2rem; max-width: 50rem; color: var(--silver); }
   .meta { display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; margin-bottom: 2rem; color: var(--green); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
+  .meta a { color:inherit; font:inherit; text-decoration-thickness:1px; text-underline-offset:.2em; }
   .prose { max-width: 48rem; padding-block: 5rem; }
   .prose :global(h2) { margin: 3rem 0 1rem; font-size: clamp(2rem,4vw,3.5rem); }
   .prose :global(p) { margin-block: 1rem; color: var(--muted); }

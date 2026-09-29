@@ -5,6 +5,7 @@ export const organizationSchema = (origin: URL) => ({
   name: 'AM Digital',
   alternateName: 'AM Outsourcing Services Joint Stock Company',
   url: origin.toString(),
+  logo: new URL('/images/am-logo.png', origin).toString(),
   email: 'info@amdigital.ninja',
   foundingDate: '2015',
   description: 'AI-powered GTM operations agency serving DTC ecommerce, technology and global market-entry teams.',
@@ -16,4 +17,9 @@ export const organizationSchema = (origin: URL) => ({
   },
   areaServed: ['Vietnam', 'Southeast Asia', 'United States', 'Europe', 'India', 'Latin America'],
   knowsAbout: ['Go-to-market strategy', 'Influencer marketing', 'User-generated content', 'SEO', 'AEO', 'GEO', 'Marketing automation'],
+  sameAs: [
+    'https://www.linkedin.com/company/amdigital-marketing/',
+    'https://www.facebook.com/profile.php?id=61584240665434',
+    'https://www.instagram.com/amvietnam.agency/',
+  ],
 });

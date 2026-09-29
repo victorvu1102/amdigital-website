@@ -1,10 +1,10 @@
 ---
-title: "Marketing in Vietnam: what actually works for foreign brands"
+title: "Marketing in Vietnam for foreign brands"
 description: "A practical guide to channels, localization and operating choices for brands entering Vietnam."
 publishedAt: 2026-09-20
 topic: Vietnam market entry
 readingTime: 7 min
-author: am-digital
+author: am-digital-team
 ---
 
 Vietnam rewards brands that localize the whole go-to-market motion, not only the campaign copy. The channel mix, creator brief, offer, landing page and response cadence all shape whether a global proposition feels relevant locally.

@@ -1,5 +1,5 @@
 ---
-title: The operating system behind global creator campaigns
+title: How global creator campaigns scale
 description: Why scaling creator output is an operations challenge before it becomes a creative challenge.
 publishedAt: 2026-08-28
 author: am-digital-team
