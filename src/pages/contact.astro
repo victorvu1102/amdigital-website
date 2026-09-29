@@ -23,12 +23,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </div>
         </div>
 
-        <form class="contact-form" action="https://formsubmit.co/info@amdigital.ninja" method="POST" accept-charset="UTF-8" aria-labelledby="form-title">
-          <input type="hidden" name="_subject" value="New AM Digital website enquiry" />
-          <input type="hidden" name="_template" value="table" />
-          <input type="hidden" name="_captcha" value="true" />
-          <input type="hidden" name="_next" value="https://am-digital-agency.vuhuuhao.chatgpt.site/contact/thanks/" />
-          <label class="honey" aria-hidden="true">Leave this field empty<input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
+        <form class="contact-form" action="/api/contact" method="POST" accept-charset="UTF-8" aria-labelledby="form-title" data-contact-form>
+          <label class="honey" aria-hidden="true">Leave this field empty<input type="text" name="botcheck" tabindex="-1" autocomplete="off" /></label>
 
           <div class="form-heading">
             <p class="eyebrow">Tell us about the opportunity</p>
@@ -70,7 +66,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
           </label>
 
           <div class="form-footer">
-            <p>Protected by reCAPTCHA and an additional anti-spam check. By sending, you agree that AM Digital may contact you about this enquiry.</p>
+            <div><p>Protected by Web3Forms spam filtering and an additional anti-bot check. By sending, you agree that AM Digital may contact you about this enquiry.</p><p class="form-status" role="status" aria-live="polite" data-form-status></p></div>
             <button class="button button--green" type="submit">Send enquiry <span aria-hidden="true">→</span></button>
           </div>
         </form>
@@ -105,6 +101,8 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .message-field { margin-top:.15rem; }
   .form-footer { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding-top:.25rem; }
   .form-footer p { max-width:29rem; color:var(--muted); font-size:.76rem; line-height:1.55; }
+  .form-status { min-height:1.2em; margin-top:.45rem; color:var(--green-dark)!important; font-weight:750; }
+  .form-status.is-error { color:#a83c32!important; }
   .form-footer .button { flex:none; border-color:var(--green); cursor:pointer; }
   .honey { position:absolute!important; width:1px!important; height:1px!important; overflow:hidden!important; clip:rect(0 0 0 0)!important; clip-path:inset(50%)!important; white-space:nowrap!important; }
   @media (max-width:900px) {
@@ -119,3 +117,25 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     .contact-details div { grid-template-columns:1fr; gap:.4rem; }
   }
 </style>
+
+<script>
+  const form = document.querySelector<HTMLFormElement>('[data-contact-form]');
+  const status = document.querySelector<HTMLElement>('[data-form-status]');
+  form?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const button = form.querySelector<HTMLButtonElement>('button[type="submit"]');
+    if (button) { button.disabled = true; button.textContent = 'Sending…'; }
+    if (status) { status.textContent = 'Sending your enquiry…'; status.classList.remove('is-error'); }
+    try {
+      const values = Object.fromEntries(new FormData(form).entries());
+      const response = await fetch('/api/contact', { method:'POST', headers:{'Content-Type':'application/json','Accept':'application/json'}, body:JSON.stringify(values) });
+      const result = await response.json().catch(() => ({}));
+      if (!response.ok || !result.success) throw new Error(result.message || 'Unable to send your enquiry.');
+      window.location.assign('/contact/thanks/');
+    } catch (error) {
+      if (status) { status.textContent = error instanceof Error ? error.message : 'Unable to send. Please email info@amdigital.ninja.'; status.classList.add('is-error'); }
+      if (button) { button.disabled = false; button.innerHTML = 'Send enquiry <span aria-hidden="true">→</span>'; }
+    }
+  });
+</script>
