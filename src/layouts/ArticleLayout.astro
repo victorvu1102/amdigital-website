@@ -12,23 +12,14 @@ const articleSchema = { '@context':'https://schema.org', '@type':'Article', head
 <BaseLayout {title} {description} type="article" schema={articleSchema}>
   <Breadcrumbs items={[{label:'Home',href:'/'},{label:'Blog',href:'/blog/'},{label:title,href:`/blog/${slug}/`}]} />
   <article>
-    <header class="article-head surface-dark">
-      <div class="container">
-        <div class="meta"><span>{topic}</span><span>{readingTime}</span><a href={`/authors/#${author}`} rel="author">{authorName}</a><time datetime={publishedAt.toISOString()}>{publishedAt.toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'})}</time></div>
-        <h1>{title}</h1>
-        <p>{description}</p>
-      </div>
-    </header>
-    <div class="prose container"><slot /></div>
+    <header class="article-head"><div class="article-word" aria-hidden="true">NOTE</div><div class="container head-grid"><div class="article-number" aria-hidden="true">AM<br />/26</div><div class="head-main"><div class="meta"><span>{topic}</span><span>{readingTime}</span><time datetime={publishedAt.toISOString()}>{publishedAt.toLocaleDateString('en-GB',{day:'2-digit',month:'long',year:'numeric'})}</time></div><h1>{title}</h1><p>{description}</p><a class="author" href={`/authors/#${author}`} rel="author">Written by {authorName} <span aria-hidden="true">↗</span></a></div></div></header>
+    <div class="article-body container"><aside aria-label="Article information"><span class="eyebrow">Field note</span><strong>{topic}</strong><span>{readingTime}</span><a href="/blog/">← All articles</a></aside><div class="prose"><slot /></div></div>
+    <footer class="article-footer"><div class="container footer-inner"><div><p class="eyebrow">Need a specialist?</p><h2>Turn the insight<br />into action.</h2></div><a class="button button--light" href="/contact/">Talk to our team <span aria-hidden="true">→</span></a></div></footer>
   </article>
 </BaseLayout>
 <style>
-  .article-head { padding: clamp(5rem,10vw,9rem) 0; }
-  .article-head h1 { max-width: 12ch; font-size: clamp(3rem,8vw,7rem); }
-  .article-head p { margin-top: 2rem; max-width: 50rem; color: var(--silver); }
-  .meta { display: flex; flex-wrap: wrap; gap: .8rem 1.4rem; margin-bottom: 2rem; color: var(--green); font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; }
-  .meta a { color:inherit; font:inherit; text-decoration-thickness:1px; text-underline-offset:.2em; }
-  .prose { max-width: 48rem; padding-block: 5rem; }
-  .prose :global(h2) { margin: 3rem 0 1rem; font-size: clamp(2rem,4vw,3.5rem); }
-  .prose :global(p) { margin-block: 1rem; color: var(--muted); }
+  .article-head{position:relative;overflow:hidden;padding:clamp(5rem,9vw,8rem) 0;background:var(--navy);color:var(--white)}.head-grid{position:relative;z-index:1;display:grid;grid-template-columns:8rem minmax(0,1fr);gap:clamp(2rem,5vw,5rem)}.article-number{padding-top:.35rem;border-right:1px solid rgba(255,255,255,.22);color:var(--green-bright);font-size:1.1rem;font-weight:850;letter-spacing:.08em;line-height:1.3}.head-main{max-width:68rem}.meta{display:flex;flex-wrap:wrap;gap:.7rem 1.5rem;margin-bottom:2rem;color:var(--green-bright);font-size:.75rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase}.article-head h1{max-width:14ch;font-size:clamp(3.4rem,8vw,7.8rem)}.article-head p{max-width:49rem;margin-top:2rem;color:var(--silver);font-size:clamp(1.1rem,1.8vw,1.4rem)}.author{display:inline-block;margin-top:2rem;color:var(--white);font-size:.85rem;font-weight:800;text-decoration:none}.article-word{position:absolute;right:-.03em;bottom:-.18em;color:rgba(255,255,255,.045);font-size:clamp(11rem,28vw,25rem);font-weight:900;letter-spacing:-.09em;line-height:.8}
+  .article-body{display:grid;grid-template-columns:13rem minmax(0,48rem);justify-content:center;gap:clamp(3rem,7vw,7rem);padding-block:clamp(4rem,8vw,7rem)}aside{position:sticky;top:7rem;align-self:start;display:flex;flex-direction:column;gap:.75rem;padding-top:.25rem;color:var(--muted);font-size:.8rem}aside strong{color:var(--ink);font-size:1rem}aside a{margin-top:1rem;color:var(--green);font-weight:800;text-decoration:none}.prose{min-width:0}.prose :global(>p:first-child){margin-top:0;color:var(--ink);font-size:clamp(1.25rem,2vw,1.6rem);line-height:1.55}.prose :global(h2){margin:4.5rem 0 1.4rem;padding-top:1.3rem;border-top:2px solid var(--green);font-size:clamp(2.4rem,5vw,4.5rem)}.prose :global(h3){margin:3rem 0 1rem;color:var(--green-dark);font-size:clamp(1.65rem,3vw,2.6rem);line-height:1.05}.prose :global(p){margin-block:1.15rem;color:var(--muted)}.prose :global(ul),.prose :global(ol){display:grid;gap:.8rem;margin:1.5rem 0;padding-left:1.3rem}.prose :global(li){padding-left:.35rem;color:var(--muted)}.prose :global(li::marker){color:var(--green);font-weight:900}.prose :global(a){color:var(--green-dark);font-weight:750}.prose :global(strong){color:var(--ink)}.prose :global(table){width:100%;margin:2rem 0;border-collapse:collapse;font-size:.95rem}.prose :global(th){background:var(--navy);color:var(--white);text-align:left}.prose :global(th),.prose :global(td){padding:1rem;border:1px solid var(--line);vertical-align:top}.prose :global(tr:nth-child(even) td){background:var(--green-soft)}.prose :global(blockquote){margin:2rem 0;padding:1.5rem 2rem;border-left:5px solid var(--green);background:var(--green-soft)}.prose :global(blockquote p){color:var(--ink)}
+  .article-footer{background:var(--green);color:var(--white)}.footer-inner{display:flex;min-height:23rem;align-items:center;justify-content:space-between;gap:2rem;padding-block:3rem}.footer-inner h2{margin-top:.7rem;font-size:clamp(3rem,6vw,6rem)}
+  @media(max-width:760px){.head-grid{grid-template-columns:1fr}.article-number{display:none}.article-body{grid-template-columns:1fr}aside{position:static;display:grid;grid-template-columns:1fr 1fr;gap:.5rem 1rem;padding-bottom:1.5rem;border-bottom:1px solid var(--line)}aside a{margin-top:.5rem}.prose :global(table){display:block;overflow-x:auto;white-space:nowrap}.footer-inner{align-items:flex-start;flex-direction:column;justify-content:center}}
 </style>
