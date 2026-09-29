@@ -26,6 +26,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
         <form class="contact-form" action="https://formsubmit.co/info@amdigital.ninja" method="POST" accept-charset="UTF-8" aria-labelledby="form-title">
           <input type="hidden" name="_subject" value="New AM Digital website enquiry" />
           <input type="hidden" name="_template" value="table" />
+          <input type="hidden" name="_captcha" value="true" />
           <input type="hidden" name="_next" value="https://am-digital-agency.vuhuuhao.chatgpt.site/contact/thanks/" />
           <label class="honey" aria-hidden="true">Leave this field empty<input type="text" name="_honey" tabindex="-1" autocomplete="off" /></label>
 
@@ -100,7 +101,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
   .contact-form input,.contact-form select,.contact-form textarea { width:100%; min-height:3.25rem; padding:.8rem .95rem; border:1px solid #b9c9be; border-radius:0; background:rgba(255,255,255,.84); color:var(--ink); font:inherit; outline:none; transition:border-color .2s ease,box-shadow .2s ease; }
   .contact-form textarea { min-height:9.5rem; resize:vertical; line-height:1.55; }
   .contact-form input:focus,.contact-form select:focus,.contact-form textarea:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(0,126,40,.14); }
-  .contact-form input:invalid:not(:placeholder-shown),.contact-form textarea:invalid:not(:placeholder-shown) { border-color:#a83c32; }
+  .contact-form input:user-invalid,.contact-form select:user-invalid,.contact-form textarea:user-invalid { border-color:#a83c32; box-shadow:0 0 0 3px rgba(168,60,50,.1); }
   .message-field { margin-top:.15rem; }
   .form-footer { display:flex; align-items:center; justify-content:space-between; gap:2rem; padding-top:.25rem; }
   .form-footer p { max-width:29rem; color:var(--muted); font-size:.76rem; line-height:1.55; }
